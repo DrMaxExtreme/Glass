@@ -4,20 +4,23 @@ using UnityEngine;
 
 public class GoDown : MonoBehaviour
 {
-    private float _distance = 0.58f;
-    private float _speed;
-    
+    private float _speed = 0.1f;
+    private Transform _target;
+
+    private void Start()
+    {
+        Ray ray = new Ray(transform.position, -transform.up);
+        RaycastHit hit;
+
+        if (Physics.Raycast(ray, out hit))
+            _target.position = hit.point; //в _target.position ничего не сохраняется
+    }
+
     void Update()
     {
-        float speed = 3;
+        //transform.position = Vector3.MoveTowards(transform.position, _target.position, _speed);
 
-        Ray ray = new Ray(transform.position, Vector3.down);
-
-        if (Physics.Raycast(ray, _distance))
-            _speed = 0;
-        else
-            _speed = speed;
-
-        transform.Translate(Vector3.down * _speed * Time.deltaTime);
+        Debug.DrawRay(transform.position, -transform.up * 10, Color.yellow);
+        Debug.DrawRay(transform.position, _target.position * 10, Color.red);
     }
 }
