@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.1802834, g: 0.2257135, b: 0.3069223, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -605,13 +605,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db5dd08daf480d847a4a675a47586338, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _cubePrefabs:
-  - {fileID: 3300782158951929064, guid: 5375c9f99779f50438abe10dcbda260c, type: 3}
-  - {fileID: 3300782158951929064, guid: c471272fdcea46147bb0d986f03d2f08, type: 3}
-  - {fileID: 3300782158951929064, guid: 43f07f68f940b2d49b8f00a41daec08b, type: 3}
-  - {fileID: 3300782158951929064, guid: c93487af35137d146af2e731911835f9, type: 3}
-  - {fileID: 3300782158951929064, guid: 35d5255c80c6111439087ef5536faebe, type: 3}
-  - {fileID: 3300782158951929064, guid: c493d863afcc3e346b994d29323a4156, type: 3}
+  _cubePrefab: {fileID: 6639997070611828883, guid: 5375c9f99779f50438abe10dcbda260c, type: 3}
   _spawnPoints:
   - {fileID: 690979044}
   - {fileID: 1250422497}
@@ -620,6 +614,8 @@ MonoBehaviour:
   - {fileID: 560481392}
   - {fileID: 373815415}
   - {fileID: 522035584}
+  _stepCubesCount: 4
+  _startCubesCount: 14
 --- !u!1 &1663712955
 GameObject:
   m_ObjectHideFlags: 0
