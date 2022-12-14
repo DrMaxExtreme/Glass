@@ -4,15 +4,15 @@ using UnityEngine;
 
 public class SelecterColor : MonoBehaviour
 {
-    // Start is called before the first frame update
+    [SerializeField] private GameObject _cube;
+    [SerializeField] Color[] _colors;
+
+    public Color[] Colors => _colors;
+
     void Start()
     {
-        
-    }
+        int colorIndex = Random.Range(0, _colors.Length);
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        _cube.GetComponent<Renderer>().material.color = _colors[colorIndex];
     }
 }

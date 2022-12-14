@@ -614,8 +614,8 @@ MonoBehaviour:
   - {fileID: 560481392}
   - {fileID: 373815415}
   - {fileID: 522035584}
-  _stepCubesCount: 0
-  _startCubesCount: 1
+  _stepCubesCount: 4
+  _startCubesCount: 14
 --- !u!1 &1663712955
 GameObject:
   m_ObjectHideFlags: 0
@@ -731,6 +731,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8165742670780281963, guid: b56a728e2a9b6c44dbfaea92cf7eae04, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8165742670923158775, guid: b56a728e2a9b6c44dbfaea92cf7eae04, type: 3}
+      propertyPath: m_Size.y
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
