@@ -80,6 +80,7 @@ MonoBehaviour:
   - {r: 0.27450982, g: 0.78431374, b: 0.78431374, a: 1}
   - {r: 0.27450982, g: 0.78431374, b: 0.27450982, a: 1}
   - {r: 0.78249085, g: 0.78431374, b: 0.27450982, a: 1}
+  _differenceIntensityColor: 0.5
 --- !u!1001 &8346016135757857785
 PrefabInstance:
   m_ObjectHideFlags: 0

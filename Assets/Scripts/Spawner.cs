@@ -76,7 +76,7 @@ public class Spawner : MonoBehaviour
 
     private bool IsExceededLimitCubesInColumn()
     {
-        
+        //если в луч попало >12 кубов = пройгрыш
         return false;
     }
 }
