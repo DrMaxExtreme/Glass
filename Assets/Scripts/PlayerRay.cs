@@ -20,27 +20,12 @@ public class PlayerRay : MonoBehaviour
 
             if (selectable)
             {
-                if(_currentSecectable && _currentSecectable != selectable)
+                if (_currentSecectable && _currentSecectable != selectable)
                     _currentSecectable.Deselect();
 
                 _currentSecectable = selectable;
-                selectable.Select();
-            }
-            else
-            {
-                if (_currentSecectable)
-                {
-                    _currentSecectable.Deselect();
-                    _currentSecectable = null;
-                }
-            }
-        }
-        else
-        {
-            if (_currentSecectable)
-            {
-                _currentSecectable.Deselect();
-                _currentSecectable = null;
+                selectable.Select(true);
+                selectable.SelectIdentityColorCubes();
             }
         }
     }
