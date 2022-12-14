@@ -73,4 +73,10 @@ public class Spawner : MonoBehaviour
             index++;
         }
     }
+
+    private bool IsExceededLimitCubesInColumn()
+    {
+        
+        return false;
+    }
 }
