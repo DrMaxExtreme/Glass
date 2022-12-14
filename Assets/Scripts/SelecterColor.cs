@@ -10,13 +10,16 @@ public class SelecterColor : MonoBehaviour
 
     private Color _startColor;
     private Color _selectColor;
+    private int _colorIndex;
+
+    public int ColorIndex => _colorIndex;
 
     public Color[] Colors => _colors;
 
     private void Start()
     {
-        int colorIndex = Random.Range(0, _colors.Length);
-        _cube.GetComponent<Renderer>().material.color = _colors[colorIndex];
+        _colorIndex = Random.Range(0, _colors.Length);
+        _cube.GetComponent<Renderer>().material.color = _colors[_colorIndex];
 
         _startColor = _cube.GetComponent<Renderer>().material.color;
         Color currentColor = _startColor;
