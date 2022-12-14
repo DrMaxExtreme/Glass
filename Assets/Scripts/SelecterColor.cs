@@ -35,7 +35,6 @@ public class SelecterColor : MonoBehaviour
 
     private void ChangeColor(Color targetColor)
     {
-
         _cube.GetComponent<Renderer>().material.color = targetColor;
     }
 }

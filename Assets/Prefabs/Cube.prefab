@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4824096151850290151}
   - component: {fileID: 3917099683581757362}
   - component: {fileID: 1463020985291156363}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -80,7 +80,7 @@ MonoBehaviour:
   - {r: 0.27450982, g: 0.78431374, b: 0.78431374, a: 1}
   - {r: 0.27450982, g: 0.78431374, b: 0.27450982, a: 1}
   - {r: 0.78249085, g: 0.78431374, b: 0.27450982, a: 1}
-  _differenceIntensityColor: 0.5
+  _differenceIntensityColor: 0.4
 --- !u!1001 &8346016135757857785
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -91,6 +91,10 @@ PrefabInstance:
     - target: {fileID: 6327920384895193232, guid: 20db3560889860c4f85f22b93fabe5ee, type: 3}
       propertyPath: m_Name
       value: CubeView
+      objectReference: {fileID: 0}
+    - target: {fileID: 6327920384895193232, guid: 20db3560889860c4f85f22b93fabe5ee, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 9173810393396452860, guid: 20db3560889860c4f85f22b93fabe5ee, type: 3}
       propertyPath: m_RootOrder
