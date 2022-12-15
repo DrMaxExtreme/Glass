@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerRay : MonoBehaviour
 {
-    [SerializeField] LayerMask layerMask;
+    [SerializeField] LayerMask _layerMask;
 
     private SelecterColor _currentSecectable;
 
@@ -14,7 +14,7 @@ public class PlayerRay : MonoBehaviour
 
         RaycastHit hit;
 
-        if (Physics.Raycast(ray, out hit, layerMask))
+        if (Physics.Raycast(ray, out hit, _layerMask))
         {
             SelecterColor selectable = hit.collider.gameObject.GetComponent<SelecterColor>();
 
@@ -26,6 +26,11 @@ public class PlayerRay : MonoBehaviour
                 _currentSecectable = selectable;
                 selectable.Select(true);
                 selectable.SelectIdentityColorCubes();
+            }
+
+            if (Input.GetMouseButtonDown(0))
+            {
+                hit.collider.gameObject.GetComponent<DestroyIndetityColorCubes>().Destroy(_layerMask);
             }
         }
     }

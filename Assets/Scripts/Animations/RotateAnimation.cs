@@ -5,8 +5,8 @@ using UnityEngine;
 public class RotateAnimation : MonoBehaviour
 {
     private float _animationSpeed;
-    private Quaternion originalRotation;
-    private float angle;
+    private Quaternion _originalRotation;
+    private float _angle;
 
     private void Start()
     {
@@ -15,17 +15,17 @@ public class RotateAnimation : MonoBehaviour
 
         transform.rotation = Random.rotation;
         _animationSpeed = Random.Range(minSpeedAnimation, maxSpeedAnimation);
-        originalRotation = transform.rotation;
+        _originalRotation = transform.rotation;
     }
 
     private void FixedUpdate()
     {
-        angle++;
+        _angle++;
 
-        Quaternion quaternionY = Quaternion.AngleAxis(angle * _animationSpeed, Vector3.up);
-        Quaternion quaternionX = Quaternion.AngleAxis(angle * _animationSpeed, Vector3.right);
-        Quaternion quaternionZ = Quaternion.AngleAxis(angle, Vector3.forward);
+        Quaternion quaternionY = Quaternion.AngleAxis(_angle * _animationSpeed, Vector3.up);
+        Quaternion quaternionX = Quaternion.AngleAxis(_angle * _animationSpeed, Vector3.right);
+        Quaternion quaternionZ = Quaternion.AngleAxis(_angle, Vector3.forward);
 
-        transform.rotation = originalRotation * quaternionY * quaternionX * quaternionZ;
+        transform.rotation = _originalRotation * quaternionY * quaternionX * quaternionZ;
     }
 }
