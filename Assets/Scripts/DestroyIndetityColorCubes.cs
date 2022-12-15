@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class DestroyIndetityColorCubes : MonoBehaviour
 {
-    public void Destroy(LayerMask layerMask) //создать отдельный метод по созданию лучей
+    /*public void Destroy(LayerMask layerMask) //создать отдельный метод по созданию лучей
     {
         float rayDisnatce = 20f;
 
@@ -17,9 +17,9 @@ public class DestroyIndetityColorCubes : MonoBehaviour
         SelectInRay(Physics.RaycastAll(rayDown, rayDisnatce, layerMask));
         SelectInRay(Physics.RaycastAll(rayRigth, rayDisnatce, layerMask));
         SelectInRay(Physics.RaycastAll(rayLeft, rayDisnatce, layerMask));
-    }
+    }*/
 
-    private void SelectInRay(RaycastHit[] collisions)
+    /*private void SelectInRay(RaycastHit[] collisions)
     {
         foreach (var collision in collisions)
         {
@@ -30,5 +30,5 @@ public class DestroyIndetityColorCubes : MonoBehaviour
                 collision.collider.gameObject.GetComponent<SelecterColor>().Select(true);
             }
         }
-    }
+    }*/
 }

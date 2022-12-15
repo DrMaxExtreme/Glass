@@ -33,7 +33,7 @@ public class SelecterColor : MonoBehaviour
         Deselect();
     }
 
-    public void Select(bool isSelected) 
+    public void Select(bool isSelected)
     {
         if (isSelected)
             ChangeColor(_selectColor);
@@ -46,19 +46,29 @@ public class SelecterColor : MonoBehaviour
         ChangeColor(_startColor);
     }
 
+    public List<Ray> SetRays()
+    {
+        List<Ray> rays = new List<Ray>
+        {
+            new Ray(transform.position, transform.up),
+            new Ray(transform.position, -transform.up),
+            new Ray(transform.position, transform.right),
+            new Ray(transform.position, -transform.right)
+        };
+
+        return rays;
+    }
+
     public void SelectIdentityColorCubes()
     {
         float rayDisnatce = 20f;
 
-        Ray rayUp = new Ray(transform.position, transform.up);
-        Ray rayDown = new Ray(transform.position, -transform.up);
-        Ray rayRigth = new Ray(transform.position, transform.right);
-        Ray rayLeft = new Ray(transform.position, -transform.right);
+        List<Ray> rays = SetRays();
 
-        SelectInRay(Physics.RaycastAll(rayUp, rayDisnatce, _layerMask));
-        SelectInRay(Physics.RaycastAll(rayDown, rayDisnatce, _layerMask));
-        SelectInRay(Physics.RaycastAll(rayRigth, rayDisnatce, _layerMask));
-        SelectInRay(Physics.RaycastAll(rayLeft, rayDisnatce, _layerMask));
+        foreach (var ray in rays)
+        {
+            SelectInRay(Physics.RaycastAll(ray, rayDisnatce, _layerMask));
+        }
     }
 
     private void ChangeColor(Color targetColor)

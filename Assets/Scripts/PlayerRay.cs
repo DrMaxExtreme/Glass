@@ -30,7 +30,7 @@ public class PlayerRay : MonoBehaviour
 
             if (Input.GetMouseButtonDown(0))
             {
-                hit.collider.gameObject.GetComponent<DestroyIndetityColorCubes>().Destroy(_layerMask);
+                //hit.collider.gameObject.GetComponent<DestroyIndetityColorCubes>().Destroy(_layerMask);
             }
         }
     }
