@@ -6,13 +6,14 @@ using UnityEngine.UI;
 using TMPro;
 using UnityEngine.UIElements;
 
-public class PlayerRay : MonoBehaviour
+public class Player : MonoBehaviour
 {
     [SerializeField] private Spawner _spawner;
     [SerializeField] private LayerMask _layerMask;
     [SerializeField] private GameObject _glass;
     [SerializeField] private TMP_Text _textCountSelected;
     [SerializeField] private TMP_Text _textScore;
+    [SerializeField] private TMP_Text _textScoreGameOver;
     [SerializeField] private Canvas _canvas;
 
     private SelecterCubes _currentSecectable;
@@ -23,6 +24,7 @@ public class PlayerRay : MonoBehaviour
         string defaultCountSelectedText = "0";
         _textCountSelected.text = defaultCountSelectedText;
         _textScore.text = Convert.ToString(_score);
+        _textScoreGameOver.text = Convert.ToString(_score);
 
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
@@ -45,13 +47,34 @@ public class PlayerRay : MonoBehaviour
             if (selectable && Input.GetMouseButtonDown(0))
             {
                 selectable.SelectIdentityColorCubes(true);
-                Destroy(selectable.gameObject);
-                _spawner.SpawnCubes();
-                _score += selectable.GetScore();
-
-                if (_spawner.IsExceededLimitCubesInColumn()) 
-                    _glass.SetActive(false);
+                SetScore(selectable, StartDeley);
             }
         }
+    }
+
+    private void StartDeley()
+    {
+        StartCoroutine(CheckOverflow());
+    }
+
+    private IEnumerator CheckOverflow()
+    {
+        float delaySeconds = 0.01f;
+
+        yield return new WaitForSeconds(delaySeconds);
+
+        if (_spawner.IsExceededLimitCubesInColumn())
+        {
+            _glass.SetActive(false);
+            _canvas.GetComponent<GameOverPanel>().ActivebleGameOverPanel();
+        }
+    }
+
+    private void SetScore(SelecterCubes selectable, Action onComplite)
+    {
+        Destroy(selectable.gameObject);
+        _spawner.SpawnCubes();
+        _score += selectable.GetScore();
+        onComplite?.Invoke();
     }
 }

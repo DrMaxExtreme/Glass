@@ -21,7 +21,7 @@ public class Spawner : MonoBehaviour
     public bool IsExceededLimitCubesInColumn()
     {
         float rayDisnatce = 20f;
-        int maxCubesCount = 11;
+        int maxCubesCount = 10;
         float startRayYPosition = 1;
 
         foreach (var spawnPoint in _spawnPoints)
@@ -29,12 +29,10 @@ public class Spawner : MonoBehaviour
             Vector3 startRayPosition = new Vector3(spawnPoint.position.x, spawnPoint.position.y + startRayYPosition, spawnPoint.position.z);
 
             Ray ray = new Ray(startRayPosition, -transform.up);
+            Debug.DrawRay(startRayPosition, -transform.up, Color.magenta);
 
             if (Physics.RaycastAll(ray, rayDisnatce, _layerMask).Count() > maxCubesCount)
-            {
-                Debug.Log(Physics.RaycastAll(ray, rayDisnatce, _layerMask).Count());
                 return true;
-            }
         }
 
         return false;

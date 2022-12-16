@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class MovementDown : MonoBehaviour
 {
-    private float _speed = 0.333f;
+    private float _speed = 0.5f;
     private float _distance = 1f;
     private bool _isMove = false;
     private Vector3 _targetPosition;
