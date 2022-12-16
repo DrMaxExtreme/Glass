@@ -2,7 +2,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
+using UnityEngine.UIElements;
 
 public class PlayerRay : MonoBehaviour
 {
@@ -11,6 +13,7 @@ public class PlayerRay : MonoBehaviour
     [SerializeField] private GameObject _glass;
     [SerializeField] private TMP_Text _textCountSelected;
     [SerializeField] private TMP_Text _textScore;
+    [SerializeField] private Canvas _canvas;
 
     private SelecterCubes _currentSecectable;
     private float _score = 0;
