@@ -1,19 +1,27 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class PlayerRay : MonoBehaviour
 {
     [SerializeField] private Spawner _spawner;
     [SerializeField] private LayerMask _layerMask;
     [SerializeField] private GameObject _glass;
+    [SerializeField] private TMP_Text _textCountSelected;
+    [SerializeField] private TMP_Text _textScore;
 
     private SelecterCubes _currentSecectable;
+    private float _score = 0;
 
     private void LateUpdate()
     {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        string defaultCountSelectedText = "0";
+        _textCountSelected.text = defaultCountSelectedText;
+        _textScore.text = Convert.ToString(_score);
 
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
 
         if (Physics.Raycast(ray, out hit, _layerMask))
@@ -28,13 +36,15 @@ public class PlayerRay : MonoBehaviour
                 _currentSecectable = selectable;
                 selectable.Select(true);
                 selectable.SelectIdentityColorCubes(false);
+                _textCountSelected.text = Convert.ToString(selectable.CountSelected);
             }
 
-            if (Input.GetMouseButtonDown(0))
+            if (selectable && Input.GetMouseButtonDown(0))
             {
                 selectable.SelectIdentityColorCubes(true);
                 Destroy(selectable.gameObject);
                 _spawner.SpawnCubes();
+                _score += selectable.GetScore();
 
                 if (_spawner.IsExceededLimitCubesInColumn()) 
                     _glass.SetActive(false);

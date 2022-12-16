@@ -26,9 +26,7 @@ public class Spawner : MonoBehaviour
 
         foreach (var spawnPoint in _spawnPoints)
         {
-            Vector3 position = new Vector3(spawnPoint.position.x, spawnPoint.position.y, spawnPoint.position.z);
-
-            Vector3 startRayPosition = new Vector3(position.x, position.y + startRayYPosition, position.z);
+            Vector3 startRayPosition = new Vector3(spawnPoint.position.x, spawnPoint.position.y + startRayYPosition, spawnPoint.position.z);
 
             Ray ray = new Ray(startRayPosition, -transform.up);
 

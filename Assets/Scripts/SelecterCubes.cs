@@ -13,8 +13,10 @@ public class SelecterCubes : MonoBehaviour
     private Color _startColor;
     private Color _selectColor;
     private int _colorIndex;
+    private int _countSelected;
 
     public int ColorIndex => _colorIndex;
+    public int CountSelected => _countSelected;
 
     public Color[] Colors => _colors;
 
@@ -62,6 +64,7 @@ public class SelecterCubes : MonoBehaviour
     public void SelectIdentityColorCubes(bool isDestroyed)
     {
         float rayDisnatce = 20f;
+        _countSelected = 1;
 
         List<Ray> rays = SetRays();
 
@@ -69,6 +72,18 @@ public class SelecterCubes : MonoBehaviour
         {
             SelectInRay(Physics.RaycastAll(ray, rayDisnatce, _layerMask), isDestroyed);
         }
+    }
+
+    public float GetScore()
+    {
+        float countScore = 0;
+
+        for (int i = 1; i <= _countSelected; i++)
+        {
+            countScore += i;
+        }
+
+        return Mathf.Round(countScore);
     }
 
     private void ChangeColor(Color targetColor)
@@ -84,6 +99,8 @@ public class SelecterCubes : MonoBehaviour
 
             if (collisionColorIndex == _colorIndex)
             {
+                _countSelected++;
+
                 if (isDestroyed)
                     DectroyColorInRay(collision);
                 else
