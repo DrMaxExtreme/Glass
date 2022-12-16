@@ -10,8 +10,6 @@ public class Spawner : MonoBehaviour
     [SerializeField] private int _stepCubesCount;
     [SerializeField] private int _startCubesCount;
 
-    private float _secondsBetweenSpawn = 1;
-    private float _elapcedTime = 0;
     private List<int> _pointsIndex = new List<int>();
 
     private void Start()
@@ -19,18 +17,7 @@ public class Spawner : MonoBehaviour
         StartSpawnCubes();
     }
 
-    private void Update()
-    {
-        _elapcedTime += Time.deltaTime;
-
-        if(_elapcedTime >= _secondsBetweenSpawn)
-        {
-            _elapcedTime = 0;
-            SpawnCubes();
-        }
-    }
-
-    private void SpawnCubes()
+    public void SpawnCubes()
     {
         int pointIndex;
 

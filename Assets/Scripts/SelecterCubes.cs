@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class SelecterColor : MonoBehaviour
+public class SelecterCubes : MonoBehaviour
 {
     [SerializeField] private GameObject _cube;
     [SerializeField] Color[] _colors;
@@ -59,7 +59,7 @@ public class SelecterColor : MonoBehaviour
         return rays;
     }
 
-    public void SelectIdentityColorCubes()
+    public void SelectIdentityColorCubes(bool isDestroyed)
     {
         float rayDisnatce = 20f;
 
@@ -67,7 +67,7 @@ public class SelecterColor : MonoBehaviour
 
         foreach (var ray in rays)
         {
-            SelectInRay(Physics.RaycastAll(ray, rayDisnatce, _layerMask));
+            SelectInRay(Physics.RaycastAll(ray, rayDisnatce, _layerMask), isDestroyed);
         }
     }
 
@@ -76,16 +76,29 @@ public class SelecterColor : MonoBehaviour
         _cube.GetComponent<Renderer>().material.color = targetColor;
     }
 
-    private void SelectInRay(RaycastHit[] collisions)
+    private void SelectInRay(RaycastHit[] collisions, bool isDestroyed)
     {
         foreach (var collision in collisions)
         {
-            int collisionColorIndex = collision.collider.gameObject.GetComponent<SelecterColor>().ColorIndex;
+            int collisionColorIndex = collision.collider.gameObject.GetComponent<SelecterCubes>().ColorIndex;
 
             if (collisionColorIndex == _colorIndex)
             {
-                collision.collider.gameObject.GetComponent<SelecterColor>().Select(true);
+                if (isDestroyed)
+                    DectroyColorInRay(collision);
+                else
+                    SelectColorInRay(collision);
             }
         }
+    }
+
+    private void SelectColorInRay(RaycastHit collision)
+    {
+        collision.collider.gameObject.GetComponent<SelecterCubes>().Select(true);
+    }
+
+    private void DectroyColorInRay(RaycastHit collision)
+    {
+        Destroy(collision.collider.gameObject);
     }
 }

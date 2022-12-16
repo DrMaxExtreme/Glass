@@ -10,7 +10,7 @@ public class MovementDown : MonoBehaviour
     private bool _isMove = false;
     private Vector3 _targetPosition;
 
-    private void Update()
+    private void FixedUpdate()
     {
         Ray ray = new Ray(transform.position, -transform.up);
 
