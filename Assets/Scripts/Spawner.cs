@@ -9,12 +9,37 @@ public class Spawner : MonoBehaviour
     [SerializeField] private Transform[] _spawnPoints;
     [SerializeField] private int _stepCubesCount;
     [SerializeField] private int _startCubesCount;
+    [SerializeField] private LayerMask _layerMask;
 
     private List<int> _pointsIndex = new List<int>();
 
     private void Start()
     {
         StartSpawnCubes();
+    }
+
+    public bool IsExceededLimitCubesInColumn()
+    {
+        float rayDisnatce = 20f;
+        int maxCubesCount = 11;
+        float startRayYPosition = 1;
+
+        foreach (var spawnPoint in _spawnPoints)
+        {
+            Vector3 position = new Vector3(spawnPoint.position.x, spawnPoint.position.y, spawnPoint.position.z);
+
+            Vector3 startRayPosition = new Vector3(position.x, position.y + startRayYPosition, position.z);
+
+            Ray ray = new Ray(startRayPosition, -transform.up);
+
+            if (Physics.RaycastAll(ray, rayDisnatce, _layerMask).Count() > maxCubesCount)
+            {
+                Debug.Log(Physics.RaycastAll(ray, rayDisnatce, _layerMask).Count());
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public void SpawnCubes()
@@ -59,11 +84,5 @@ public class Spawner : MonoBehaviour
 
             index++;
         }
-    }
-
-    private bool IsExceededLimitCubesInColumn()
-    {
-        //если в луч попало >12 кубов = пройгрыш
-        return false;
     }
 }

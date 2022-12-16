@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class PlayerRay : MonoBehaviour
 {
-    [SerializeField] Spawner spawner;
-    [SerializeField] LayerMask _layerMask;
+    [SerializeField] private Spawner _spawner;
+    [SerializeField] private LayerMask _layerMask;
+    [SerializeField] private GameObject _glass;
 
     private SelecterCubes _currentSecectable;
 
@@ -33,7 +34,10 @@ public class PlayerRay : MonoBehaviour
             {
                 selectable.SelectIdentityColorCubes(true);
                 Destroy(selectable.gameObject);
-                spawner.SpawnCubes();
+                _spawner.SpawnCubes();
+
+                if (_spawner.IsExceededLimitCubesInColumn()) 
+                    _glass.SetActive(false);
             }
         }
     }
