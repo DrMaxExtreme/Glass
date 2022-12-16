@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.UIElements;
+using UnityEngine.Events;
 
 public class Player : MonoBehaviour
 {
@@ -15,9 +16,15 @@ public class Player : MonoBehaviour
     [SerializeField] private TMP_Text _textScore;
     [SerializeField] private TMP_Text _textScoreGameOver;
     [SerializeField] private Canvas _canvas;
+    [SerializeField] private UnityEvent _event;
 
     private SelecterCubes _currentSecectable;
     private float _score = 0;
+
+    private void Start()
+    {
+        ActivateMusic();
+    }
 
     private void LateUpdate()
     {
@@ -72,9 +79,14 @@ public class Player : MonoBehaviour
 
     private void SetScore(SelecterCubes selectable, Action onComplite)
     {
+        ActivateAudioOnClickCube();
         Destroy(selectable.gameObject);
         _spawner.SpawnCubes();
         _score += selectable.GetScore();
         onComplite?.Invoke();
     }
+
+    public void ActivateAudioOnClickCube() { }
+
+    public void ActivateMusic() { }
 }

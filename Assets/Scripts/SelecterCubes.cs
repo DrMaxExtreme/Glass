@@ -2,13 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class SelecterCubes : MonoBehaviour
 {
     [SerializeField] private GameObject _cube;
-    [SerializeField] Color[] _colors;
-    [SerializeField] float _differenceIntensityColor;
-    [SerializeField] LayerMask _layerMask;
+    [SerializeField] private Color[] _colors;
+    [SerializeField] private float _differenceIntensityColor;
+    [SerializeField] private LayerMask _layerMask;
 
     private Color _startColor;
     private Color _selectColor;
