@@ -16,7 +16,7 @@ public class Player : MonoBehaviour
     [SerializeField] private TMP_Text _textScore;
     [SerializeField] private TMP_Text _textScoreGameOver;
     [SerializeField] private Canvas _canvas;
-    [SerializeField] private UnityEvent _event;
+    [SerializeField] private AudioSource _clickSound;
 
     private SelecterCubes _currentSecectable;
     private float _score = 0;
@@ -53,10 +53,20 @@ public class Player : MonoBehaviour
 
             if (selectable && Input.GetMouseButtonDown(0))
             {
+                PlaySountClick();
                 selectable.SelectIdentityColorCubes(true);
                 SetScore(selectable, StartDeley);
             }
         }
+    }
+
+    private void PlaySountClick()
+    {
+        float minPitch = 0.9f;
+        float maxPitch = 1.1f;
+
+        _clickSound.pitch = UnityEngine.Random.Range(minPitch, maxPitch);
+        _clickSound.Play();
     }
 
     private void StartDeley()
