@@ -6,6 +6,8 @@ using UnityEngine.UI;
 using TMPro;
 using UnityEngine.UIElements;
 using UnityEngine.Events;
+using MPUIKIT;
+using Unity.VisualScripting;
 
 public class Player : MonoBehaviour
 {
@@ -15,23 +17,32 @@ public class Player : MonoBehaviour
     [SerializeField] private TMP_Text _textCountSelected;
     [SerializeField] private TMP_Text _textScore;
     [SerializeField] private TMP_Text _textScoreGameOver;
+    [SerializeField] private TMP_Text _textCurrentLevel;
+    [SerializeField] private TMP_Text _textTargetScore;
     [SerializeField] private Canvas _canvas;
     [SerializeField] private AudioSource _clickSound;
+    [SerializeField] private MPImage _scoreFill;
 
     private SelecterCubes _currentSecectable;
     private float _score = 0;
+    private float _currentLevel = 1f;
+    private float _currentLevelMultiplier = 0.2f;
+    private float _targetScore = 250f;
+    private float _oldTargetScore = 0f;
+    private float _currentDifficulty = 1f;
+    private float _differenceNewTargetScore = 250f;
+    private float _difficultyMultiplier = 0.3f;
 
     private void Start()
     {
         ActivateMusic();
+        UpdateTexts();
     }
 
     private void LateUpdate()
     {
-        string defaultCountSelectedText = "0";
-        _textCountSelected.text = defaultCountSelectedText;
-        _textScore.text = Convert.ToString(_score);
-        _textScoreGameOver.text = Convert.ToString(_score);
+        UpdateTexts();
+        TryUpLevel();
 
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
@@ -60,12 +71,31 @@ public class Player : MonoBehaviour
         }
     }
 
+    private void TryUpLevel()
+    {
+        if (_score >= _targetScore)
+        {
+            _oldTargetScore = _targetScore;
+            _currentDifficulty += _difficultyMultiplier;
+            _targetScore += _differenceNewTargetScore * _currentDifficulty;
+            _currentLevel += _currentLevelMultiplier;
+        }
+    }
+
+    private void UpdateTexts()
+    {
+        string defaultCountSelectedText = "0";
+        string currentLevelText = "x" + Math.Round(_currentLevel, 1);
+
+        _textCountSelected.text = defaultCountSelectedText;
+        _textCurrentLevel.text = currentLevelText;
+        _textScore.text = Convert.ToString(_score);
+        _textTargetScore.text = Convert.ToString(Math.Round(_targetScore));
+        _scoreFill.fillAmount = (_score - _oldTargetScore) / (_targetScore - _oldTargetScore);
+    }
+
     private void PlaySountClick()
     {
-        float minPitch = 0.9f;
-        float maxPitch = 1.1f;
-
-        _clickSound.pitch = UnityEngine.Random.Range(minPitch, maxPitch);
         _clickSound.Play();
     }
 
@@ -84,6 +114,7 @@ public class Player : MonoBehaviour
         {
             _glass.SetActive(false);
             _canvas.GetComponent<GameOverPanel>().ActivebleGameOverPanel();
+            _textScoreGameOver.text = Convert.ToString(_score);
         }
     }
 
@@ -92,7 +123,7 @@ public class Player : MonoBehaviour
         ActivateAudioOnClickCube();
         Destroy(selectable.gameObject);
         _spawner.SpawnCubes();
-        _score += selectable.GetScore();
+        _score += Mathf.Round(selectable.GetScore() * _currentLevel);
         onComplite?.Invoke();
     }
 

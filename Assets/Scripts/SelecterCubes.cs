@@ -3,16 +3,20 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UIElements;
 
 public class SelecterCubes : MonoBehaviour
 {
     [SerializeField] private GameObject _cube;
     [SerializeField] private Color[] _colors;
     [SerializeField] private float _differenceIntensityColor;
+    [SerializeField] private float _differenceIntensityScale;
     [SerializeField] private LayerMask _layerMask;
 
     private Color _startColor;
     private Color _selectColor;
+    private Vector3 _startScale;
+    private Vector3 _selectScale;
     private int _colorIndex;
     private int _countSelected;
 
@@ -27,8 +31,13 @@ public class SelecterCubes : MonoBehaviour
         _cube.GetComponent<Renderer>().material.color = _colors[_colorIndex];
 
         _startColor = _cube.GetComponent<Renderer>().material.color;
+        _startScale = _cube.transform.localScale;
+
         Color currentColor = _startColor;
+        Transform currentTransform = _cube.transform;
+
         _selectColor = new Color(currentColor.r - _differenceIntensityColor, currentColor.g - _differenceIntensityColor, currentColor.b - _differenceIntensityColor);
+        _selectScale = new Vector3(currentTransform.localScale.x - _differenceIntensityScale, currentTransform.localScale.y - _differenceIntensityScale, currentTransform.localScale.z - _differenceIntensityScale);
     }
 
     private void Update()
@@ -39,14 +48,14 @@ public class SelecterCubes : MonoBehaviour
     public void Select(bool isSelected)
     {
         if (isSelected)
-            ChangeColor(_selectColor);
+            Highlight(_selectColor, _selectScale);
         else
             Deselect();
     }
 
     public void Deselect()
     {
-        ChangeColor(_startColor);
+        Highlight(_startColor, _startScale);
     }
 
     public List<Ray> SetRays()
@@ -77,19 +86,21 @@ public class SelecterCubes : MonoBehaviour
 
     public float GetScore()
     {
+        float cubePrice = 10;
         float countScore = 0;
 
-        for (int i = 1; i <= _countSelected; i++)
+        for (int i = 0; i < _countSelected; i++)
         {
-            countScore += i;
+            countScore += cubePrice + i;
         }
 
         return Mathf.Round(countScore);
     }
 
-    private void ChangeColor(Color targetColor)
+    private void Highlight(Color targetColor, Vector3 targetScale)
     {
         _cube.GetComponent<Renderer>().material.color = targetColor;
+        _cube.transform.localScale = targetScale;
     }
 
     private void SelectInRay(RaycastHit[] collisions, bool isDestroyed)

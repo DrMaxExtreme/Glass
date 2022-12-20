@@ -81,6 +81,7 @@ MonoBehaviour:
   - {r: 0.27450982, g: 0.78431374, b: 0.27450982, a: 1}
   - {r: 0.78249085, g: 0.78431374, b: 0.27450982, a: 1}
   _differenceIntensityColor: 0.4
+  _differenceIntensityScale: 0.2
   _layerMask:
     serializedVersion: 2
     m_Bits: 64
@@ -91,6 +92,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7054999719421983223}
     m_Modifications:
+    - target: {fileID: 4827748613455953687, guid: 20db3560889860c4f85f22b93fabe5ee, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4827748613455953687, guid: 20db3560889860c4f85f22b93fabe5ee, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: dbceb692747184fdf963852db77f004c, type: 2}
     - target: {fileID: 6327920384895193232, guid: 20db3560889860c4f85f22b93fabe5ee, type: 3}
       propertyPath: m_Name
       value: CubeView
