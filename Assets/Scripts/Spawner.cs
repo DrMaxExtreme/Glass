@@ -2,16 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using TMPro;
 
 public class Spawner : MonoBehaviour
 {
     [SerializeField] private GameObject _cubePrefab;
     [SerializeField] private Transform[] _spawnPoints;
-    [SerializeField] private int _stepCubesCount;
+    [SerializeField] private int _spawnedCubesCount;
     [SerializeField] private int _startCubesCount;
     [SerializeField] private LayerMask _layerMask;
 
     private List<int> _pointsIndex = new List<int>();
+
+    public int SpawnedCubesCount => _spawnedCubesCount;
 
     private void Start()
     {
@@ -42,7 +45,7 @@ public class Spawner : MonoBehaviour
     {
         int pointIndex;
 
-        while(_pointsIndex.Count < _stepCubesCount)
+        while(_pointsIndex.Count < _spawnedCubesCount)
         {
             pointIndex = Random.Range(0, _spawnPoints.Length);
 
@@ -58,6 +61,14 @@ public class Spawner : MonoBehaviour
         }
 
         _pointsIndex.Clear();
+    }
+
+    public void IncreasedSpawnedCount()
+    {
+        int maxCountSpawnrdCubes = 6;
+
+        if(_spawnedCubesCount < maxCountSpawnrdCubes)
+            _spawnedCubesCount++;
     }
 
     private void StartSpawnCubes()

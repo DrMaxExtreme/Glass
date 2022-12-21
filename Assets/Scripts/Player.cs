@@ -13,14 +13,16 @@ public class Player : MonoBehaviour
 {
     [SerializeField] private Spawner _spawner;
     [SerializeField] private LayerMask _layerMask;
-    [SerializeField] private GameObject _glass;
     [SerializeField] private TMP_Text _textCountSelected;
     [SerializeField] private TMP_Text _textScore;
     [SerializeField] private TMP_Text _textScoreGameOver;
     [SerializeField] private TMP_Text _textCurrentLevel;
     [SerializeField] private TMP_Text _textTargetScore;
+    [SerializeField] private TMP_Text _countSpawned;
     [SerializeField] private Canvas _canvas;
     [SerializeField] private AudioSource _clickSound;
+    [SerializeField] private AudioSource _spawnedCountUpSound;
+    [SerializeField] private AudioSource _levelUpSound;
     [SerializeField] private MPImage _scoreFill;
 
     private SelecterCubes _currentSecectable;
@@ -73,12 +75,21 @@ public class Player : MonoBehaviour
 
     private void TryUpLevel()
     {
+        float dividerLevel = 0.8f;
+
         if (_score >= _targetScore)
         {
             _oldTargetScore = _targetScore;
             _currentDifficulty += _difficultyMultiplier;
             _targetScore += _differenceNewTargetScore * _currentDifficulty;
             _currentLevel += _currentLevelMultiplier;
+            _levelUpSound.Play();
+
+            if (Math.Round(_currentLevel % dividerLevel, 1) == 0)
+            {
+                _spawner.IncreasedSpawnedCount();
+                _spawnedCountUpSound.Play();
+            }
         }
     }
 
@@ -92,6 +103,7 @@ public class Player : MonoBehaviour
         _textScore.text = Convert.ToString(_score);
         _textTargetScore.text = Convert.ToString(Math.Round(_targetScore));
         _scoreFill.fillAmount = (_score - _oldTargetScore) / (_targetScore - _oldTargetScore);
+        _countSpawned.text = Convert.ToString(_spawner.SpawnedCubesCount);
     }
 
     private void PlaySountClick()
@@ -112,8 +124,7 @@ public class Player : MonoBehaviour
 
         if (_spawner.IsExceededLimitCubesInColumn())
         {
-            _glass.SetActive(false);
-            _canvas.GetComponent<GameOverPanel>().ActivebleGameOverPanel();
+            _canvas.GetComponent<GameOverPanel>().ActivateGameOverPanel();
             _textScoreGameOver.text = Convert.ToString(_score);
         }
     }
