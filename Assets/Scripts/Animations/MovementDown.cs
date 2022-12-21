@@ -5,8 +5,6 @@ using UnityEngine;
 
 public class MovementDown : MonoBehaviour
 {
-    [SerializeField] private LayerMask _layerMask;
-
     private float _speed = 0.5f;
     private float _distance = 1f;
     private bool _isMove = false;
@@ -16,7 +14,7 @@ public class MovementDown : MonoBehaviour
     {
         Ray ray = new Ray(transform.position, -transform.up);
 
-        if(Physics.Raycast(ray, _distance, _layerMask) == false && _isMove == false)
+        if(Physics.Raycast(ray, _distance) == false && _isMove == false)
         {
             _targetPosition = new Vector3(transform.position.x, transform.position.y - _distance, transform.position.z);
             _isMove = true;
