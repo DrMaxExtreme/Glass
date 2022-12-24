@@ -11,11 +11,19 @@ public class GameOverPanel : MonoBehaviour
     [SerializeField] private GameObject _barPanel;
     [SerializeField] private GameObject _gameOverPanel;
     [SerializeField] private GameObject _glass;
+    [SerializeField] private GameObject _continueButton;
     [SerializeField] private AudioSource _gameoverSound;
     [SerializeField] private AudioSource _continueSound;
 
+    private int _countAttempts = 3;
+
     public void ActivateGameOverPanel()
     {
+        if (_countAttempts == 0)
+            _continueButton.SetActive(false);
+
+        _countAttempts--;
+
         ChangePanelsActive(false, false, false, false, true, false);
         _gameoverSound.Play();
     }
