@@ -10,10 +10,9 @@ Material:
   m_Name: 2-Pear2
   m_Shader: {fileID: 4800000, guid: bee44b4a58655ee4cbff107302a3e131, type: 3}
   m_ValidKeywords:
-  - DR_RIM_ON
+  - _CELPRIMARYMODE_SINGLE
   - _TEXTUREBLENDINGMODE_MULTIPLY
   m_InvalidKeywords:
-  - _CELPRIMARYMODE_NONE
   - _FLAT_SHADOWS_ENABLED
   - _FLAT_SPECULAR_ENABLED
   - _UNITYSHADOWMODE_NONE
@@ -78,16 +77,16 @@ Material:
     - _CelExtraEnabled: 0
     - _CelNumSteps: 7
     - _CelPrimaryEnabled: 0
-    - _CelPrimaryMode: 0
+    - _CelPrimaryMode: 1
     - _Cull: 2
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _FlatRimAmount: 0.5
-    - _FlatRimEdgeSmoothness: 0.223
+    - _FlatRimEdgeSmoothness: 0.5
     - _FlatRimEnabled: 1
-    - _FlatRimLightAlign: 0.013
-    - _FlatRimSize: 0.05
+    - _FlatRimLightAlign: 0
+    - _FlatRimSize: 0.1
     - _FlatShadowsEnabled: 1
     - _FlatSmoothness: 0.362
     - _FlatSpecularEdgeSmoothness: 0.897
@@ -118,12 +117,12 @@ Material:
     - _OverrideShadowsEnabled: 1
     - _Parallax: 0.02
     - _QueueOffset: 0
-    - _RimEnabled: 1
+    - _RimEnabled: 0
     - _SecondaryColor: 1
     - _SecondaryColorEnabled: 1
-    - _SelfShadingSize: 0.03
+    - _SelfShadingSize: 0.507
     - _SelfShadingSizeExtra: 0.083
-    - _ShadowEdgeSize: 0.049
+    - _ShadowEdgeSize: 0.022
     - _ShadowEdgeSizeExtra: 0
     - _ShadowEdgeSmoothness: 0.071
     - _ShadowFalloff: 0.01
