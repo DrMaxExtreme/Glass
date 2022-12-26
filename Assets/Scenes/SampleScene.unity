@@ -5955,10 +5955,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1278810898, guid: b56a728e2a9b6c44dbfaea92cf7eae04, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 8
-      objectReference: {fileID: 0}
     - target: {fileID: 8165742670780281962, guid: b56a728e2a9b6c44dbfaea92cf7eae04, type: 3}
       propertyPath: m_Name
       value: Glass
