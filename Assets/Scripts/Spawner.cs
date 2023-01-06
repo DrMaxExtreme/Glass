@@ -8,35 +8,46 @@ public class Spawner : MonoBehaviour
 {
     [SerializeField] private GameObject _cubePrefab;
     [SerializeField] private Transform[] _spawnPoints;
-    [SerializeField] private int _spawnedCubesCount;
+    [SerializeField] private int _startSpawnedCubesCount;
+    [SerializeField] private int _maxSpawnedCubesCount;
     [SerializeField] private int _startCubesCount;
     [SerializeField] private LayerMask _layerMask;
 
     private List<int> _pointsIndex = new List<int>();
 
-    public int SpawnedCubesCount => _spawnedCubesCount;
+    private int _currentSpawnedCubesCount; 
+
+    public int CurrentSpawnedCubesCount => _currentSpawnedCubesCount;
+    public int MaxSpawnedCubesCount => _maxSpawnedCubesCount;
 
     private void Start()
     {
         StartSpawnCubes();
+        _currentSpawnedCubesCount = _startSpawnedCubesCount;
     }
 
     public bool IsExceededLimitCubesInColumn()
     {
         float rayDisnatce = 20f;
+        float startRayYPosition = 1f;
         int maxCubesCount = 10;
-        float startRayYPosition = 1;
+        int countEmptyColumn = 0;
 
         foreach (var spawnPoint in _spawnPoints)
         {
             Vector3 startRayPosition = new Vector3(spawnPoint.position.x, spawnPoint.position.y + startRayYPosition, spawnPoint.position.z);
 
             Ray ray = new Ray(startRayPosition, -transform.up);
-            Debug.DrawRay(startRayPosition, -transform.up, Color.magenta);
 
             if (Physics.RaycastAll(ray, rayDisnatce, _layerMask).Count() > maxCubesCount)
                 return true;
+
+            if (Physics.RaycastAll(ray, rayDisnatce, _layerMask).Count() == 0)
+                countEmptyColumn++;
         }
+
+        if (countEmptyColumn == _spawnPoints.Count())
+            SpawnCubes();
 
         return false;
     }
@@ -45,7 +56,7 @@ public class Spawner : MonoBehaviour
     {
         int pointIndex;
 
-        while(_pointsIndex.Count < _spawnedCubesCount)
+        while(_pointsIndex.Count < _currentSpawnedCubesCount)
         {
             pointIndex = Random.Range(0, _spawnPoints.Length);
 
@@ -63,12 +74,30 @@ public class Spawner : MonoBehaviour
         _pointsIndex.Clear();
     }
 
-    public void IncreasedSpawnedCount()
+    public void IncreaseSpawnedCount()
     {
-        int maxCountSpawnrdCubes = 6;
+        _currentSpawnedCubesCount ++;
+    }
 
-        if(_spawnedCubesCount < maxCountSpawnrdCubes)
-            _spawnedCubesCount++;
+    public void Restart()
+    {
+        foreach (var spawnPoint in _spawnPoints)
+        {
+            float rayDisnatce = 100f;
+            float offsetPositionY = 10f;
+
+            Vector3 rayPosition = spawnPoint.transform.position;
+            rayPosition.y += offsetPositionY;
+
+            Ray ray = new Ray(rayPosition, -transform.up);
+            RaycastHit[] hits = Physics.RaycastAll(ray, rayDisnatce, _layerMask);
+
+            foreach (var hit in hits)
+                Destroy(hit.collider.gameObject);
+        }
+
+        _currentSpawnedCubesCount = _startSpawnedCubesCount;
+        StartSpawnCubes();
     }
 
     private void StartSpawnCubes()

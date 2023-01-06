@@ -17,6 +17,7 @@ public class Player : MonoBehaviour
     [SerializeField] private AudioSource _clickSound;
     [SerializeField] private AudioSource _spawnedCountUpSound;
     [SerializeField] private AudioSource _levelUpSound;
+    [SerializeField] private AudioSource _backgroundMusic;
 
     [SerializeField] private TMP_Text _countSpawned;
     [SerializeField] private MPImage _spawnedUpFill;
@@ -28,30 +29,40 @@ public class Player : MonoBehaviour
     [SerializeField] private TMP_Text _textCurrentMultiplier;
 
     [SerializeField] private MPImage _levelFill;
-    [SerializeField] private TMP_Text _currentLevet;
+    [SerializeField] private TMP_Text _textCurrentLevel;
 
-    [SerializeField] private TMP_Text _textMoneyGameOver;
+    [SerializeField] private TMP_Text _textCubesDestroyedGameOver;
+    [SerializeField] private TMP_Text _textBestCubesDestroyedGameOver;
+    [SerializeField] private TMP_Text _textCurrentMoneyGameOver;
+    [SerializeField] private TMP_Text _textBestCurrentMoneyGameOver;
+    [SerializeField] private TMP_Text _textExperienceGameOver;
 
     private SelecterCubes _currentSecectable;
-    private float _money = 0;
+
+    private float _countCubesDestroyed = 0f;
+    private float _targetCubesDestroyed = 100f;
+
+    private int _currentCubesDestroyed = 0;
+    private float _bestCurrentCubesDestroyed = 0f;
+
+    private float _currentMoney = 0f;
+    private float _bestCurrentMoney = 0f;
     private float _currentMultiplier = 1f;
-    private float _currentUpMultiplier = 0.2f;
-    private float _targetMoney = 250f;
-    private float _currentCubesDestroyed = 0;
-    private float _currentDifficulty = 1f;
-    private float _differenceNewTargetScore = 250f;
-    private float _difficultyMultiplier = 0.3f; //добавить уровень и опыт (опыт = сколько всего кубов уничтожено)
+    private float _valueUpMultiplier = 0.1f;
+
+    private float _currentExperience = 0f;
+    private float _targetExperience = 200f;
+    private float _valueUpTargetExperience = 5f;
+    private float _currentLevel = 0f;
 
     private void Start()
     {
-        ActivateMusic();
         UpdateTexts();
     }
 
     private void LateUpdate()
     {
         UpdateTexts();
-        TryUpLevel();
 
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
@@ -75,27 +86,32 @@ public class Player : MonoBehaviour
             {
                 PlaySountClick();
                 selectable.SelectIdentityColorCubes(true);
-                SetScore(selectable, StartDeley);
+                GetReward(selectable, StartDeley);
+                TryUpLevel();
             }
         }
     }
 
-    private void TryUpLevel() //переделать под уровень и опыт
+    public void Restart()
     {
-        float dividerLevel = 0.8f;
+        _countCubesDestroyed = 0f;
+        _currentCubesDestroyed = 0;
+        _currentMoney = 0f;
+        _spawner.Restart();
+    }
 
-        if (_money >= _targetMoney)
+    private void TryUpLevel()
+    {
+        if (_currentExperience >= _targetExperience)
         {
-            _currentDifficulty += _difficultyMultiplier;
-            _targetMoney += _differenceNewTargetScore * _currentDifficulty;
-            _currentMultiplier += _currentUpMultiplier;
-            _levelUpSound.Play();
+            _currentExperience -= _targetExperience;
+            _targetExperience += _valueUpTargetExperience;
+            _targetCubesDestroyed++;
+            _currentLevel++;
 
-            if (Math.Round(_currentMultiplier % dividerLevel, 1) == 0)
-            {
-                _spawner.IncreasedSpawnedCount();
-                _spawnedCountUpSound.Play();
-            }
+            _currentMultiplier += _valueUpMultiplier;
+
+            _levelUpSound.Play();
         }
     }
 
@@ -104,17 +120,21 @@ public class Player : MonoBehaviour
         string defaultCountSelectedText = "0";
         string currentLevelText = "x" + Math.Round(_currentMultiplier, 1);
 
-        _countSpawned.text = Convert.ToString(_spawner.SpawnedCubesCount);
-        //_spawnedUpFill.fillAmount = (_money - _oldTargetMoney) / (_targetMoney - _oldTargetMoney);
+        _countSpawned.text = Convert.ToString(_spawner.CurrentSpawnedCubesCount);
+
+        if (_spawner.CurrentSpawnedCubesCount == _spawner.MaxSpawnedCubesCount)
+            _spawnedUpFill.fillAmount = 0;
+        else
+            _spawnedUpFill.fillAmount = _countCubesDestroyed / _targetCubesDestroyed;
 
         _textCountSelected.text = defaultCountSelectedText;
         _textCubesDestroyed.text = Convert.ToString(_currentCubesDestroyed);
 
-        _textMoney.text = Convert.ToString(_money);
+        _textMoney.text = Convert.ToString(_currentMoney);
         _textCurrentMultiplier.text = currentLevelText;
 
-        //_levelFill.fillAmount = 
-        _currentLevet.text = Convert.ToString(_currentLevet);
+        _levelFill.fillAmount = _currentExperience / _targetExperience;
+        _textCurrentLevel.text = Convert.ToString(_currentLevel);
     }
 
     private void PlaySountClick()
@@ -130,26 +150,45 @@ public class Player : MonoBehaviour
     private IEnumerator CheckOverflow()
     {
         float delaySeconds = 0.01f;
+        string experienceText = _currentExperience + " / " + _targetExperience;
 
         yield return new WaitForSeconds(delaySeconds);
 
         if (_spawner.IsExceededLimitCubesInColumn())
         {
             _canvas.GetComponent<GameOverPanel>().ActivateGameOverPanel();
-            _textMoneyGameOver.text = Convert.ToString(_money);
+            _textCubesDestroyedGameOver.text = Convert.ToString(_currentCubesDestroyed);
+            _textBestCubesDestroyedGameOver.text = Convert.ToString(_bestCurrentCubesDestroyed);
+            _textCurrentMoneyGameOver.text = Convert.ToString(_currentMoney);
+            _textBestCurrentMoneyGameOver.text = Convert.ToString(_bestCurrentMoney);
+            _textExperienceGameOver.text = experienceText;
         }
     }
 
-    private void SetScore(SelecterCubes selectable, Action onComplite)
+        private void GetReward(SelecterCubes selectable, Action onComplite)
     {
-        ActivateAudioOnClickCube();
+        _countCubesDestroyed += selectable.CountSelected;
+        _currentCubesDestroyed += selectable.CountSelected;
+        _currentExperience += selectable.CountSelected;
+
+        if (_countCubesDestroyed >= _targetCubesDestroyed && _spawner.CurrentSpawnedCubesCount < _spawner.MaxSpawnedCubesCount)
+        {
+            _countCubesDestroyed -= _targetCubesDestroyed;
+
+            _spawner.IncreaseSpawnedCount();
+
+            _spawnedCountUpSound.Play();
+        }
+
         Destroy(selectable.gameObject);
         _spawner.SpawnCubes();
-        _money += Mathf.Round(selectable.GetScore() * _currentMultiplier);
+        _currentMoney += Mathf.Round(selectable.GetScore() * _currentMultiplier);
         onComplite?.Invoke();
+
+        if(_bestCurrentCubesDestroyed < _currentCubesDestroyed)
+            _bestCurrentCubesDestroyed = _currentCubesDestroyed;
+
+        if (_bestCurrentMoney < _currentMoney)
+            _bestCurrentMoney = _currentMoney;
     }
-
-    public void ActivateAudioOnClickCube() { }
-
-    public void ActivateMusic() { }
 }

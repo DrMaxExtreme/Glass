@@ -12,12 +12,9 @@ public class DestroyerLine : MonoBehaviour
         float rayDisnatce = 10f;
 
         Ray ray = new Ray(transform.position, transform.right);
-
         RaycastHit[] hits = Physics.RaycastAll(ray, rayDisnatce, _layerMask);
 
         foreach (var hit in hits)
-        {
             Destroy(hit.collider.gameObject);
-        }
     }
 }
