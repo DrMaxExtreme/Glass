@@ -36,6 +36,7 @@ public class Player : MonoBehaviour
     [SerializeField] private TMP_Text _textCurrentMoneyGameOver;
     [SerializeField] private TMP_Text _textBestCurrentMoneyGameOver;
     [SerializeField] private TMP_Text _textExperienceGameOver;
+    [SerializeField] private TMP_Text _textLevelGameOver;
 
     private SelecterCubes _currentSecectable;
 
@@ -150,7 +151,7 @@ public class Player : MonoBehaviour
     private IEnumerator CheckOverflow()
     {
         float delaySeconds = 0.01f;
-        string experienceText = _currentExperience + " / " + _targetExperience;
+        string experienceText = _currentExperience + "/" + _targetExperience;
 
         yield return new WaitForSeconds(delaySeconds);
 
@@ -162,6 +163,7 @@ public class Player : MonoBehaviour
             _textCurrentMoneyGameOver.text = Convert.ToString(_currentMoney);
             _textBestCurrentMoneyGameOver.text = Convert.ToString(_bestCurrentMoney);
             _textExperienceGameOver.text = experienceText;
+            _textLevelGameOver.text = Convert.ToString(_currentLevel);
         }
     }
 
