@@ -19,9 +19,8 @@ public class Player : MonoBehaviour
     [SerializeField] private AudioSource _levelUpSound;
     [SerializeField] private AudioSource _backgroundMusic;
 
-    [SerializeField] private TMP_Text _countSpawned;
     [SerializeField] private MPImage _spawnedUpFill;
-
+    [SerializeField] private TMP_Text _countCubesSpawned;
     [SerializeField] private TMP_Text _textCountSelected;
     [SerializeField] private TMP_Text _textCubesDestroyed;
 
@@ -30,6 +29,7 @@ public class Player : MonoBehaviour
 
     [SerializeField] private MPImage _levelFill;
     [SerializeField] private TMP_Text _textCurrentLevel;
+    [SerializeField] private TMP_Text _textCurrentExperience;
 
     [SerializeField] private TMP_Text _textCubesDestroyedGameOver;
     [SerializeField] private TMP_Text _textBestCubesDestroyedGameOver;
@@ -52,8 +52,8 @@ public class Player : MonoBehaviour
     private float _valueUpMultiplier = 0.1f;
 
     private float _currentExperience = 0f;
-    private float _targetExperience = 200f;
-    private float _valueUpTargetExperience = 5f;
+    private float _targetExperience = 1000f;
+    private float _valueUpTargetExperience = 100f;
     private float _currentLevel = 0f;
 
     private void Start()
@@ -118,24 +118,31 @@ public class Player : MonoBehaviour
 
     private void UpdateTexts()
     {
+        string countSpawnesText = "+" + _spawner.CurrentSpawnedCubesCount;
         string defaultCountSelectedText = "0";
         string currentLevelText = "x" + Math.Round(_currentMultiplier, 1);
+        string currentExperienceText = _currentExperience + "/" + _targetExperience;
+        string countCubesDestroyed = _countCubesDestroyed + "/" + _targetCubesDestroyed;
 
-        _countSpawned.text = Convert.ToString(_spawner.CurrentSpawnedCubesCount);
+        if (_spawner.CurrentSpawnedCubesCount < _spawner.MaxSpawnedCubesCount)
+            _textCubesDestroyed.text = countCubesDestroyed;
+        else
+            _textCubesDestroyed.text  = Convert.ToString(_countCubesDestroyed);
 
         if (_spawner.CurrentSpawnedCubesCount == _spawner.MaxSpawnedCubesCount)
-            _spawnedUpFill.fillAmount = 0;
+            _spawnedUpFill.fillAmount = 1;
         else
             _spawnedUpFill.fillAmount = _countCubesDestroyed / _targetCubesDestroyed;
 
         _textCountSelected.text = defaultCountSelectedText;
-        _textCubesDestroyed.text = Convert.ToString(_currentCubesDestroyed);
+        _countCubesSpawned.text = countSpawnesText;
 
         _textMoney.text = Convert.ToString(_currentMoney);
         _textCurrentMultiplier.text = currentLevelText;
 
         _levelFill.fillAmount = _currentExperience / _targetExperience;
         _textCurrentLevel.text = Convert.ToString(_currentLevel);
+        _textCurrentExperience.text = currentExperienceText;
     }
 
     private void PlaySountClick()
@@ -167,18 +174,18 @@ public class Player : MonoBehaviour
         }
     }
 
-        private void GetReward(SelecterCubes selectable, Action onComplite)
+    private void GetReward(SelecterCubes selectable, Action onComplite)
     {
         _countCubesDestroyed += selectable.CountSelected;
         _currentCubesDestroyed += selectable.CountSelected;
-        _currentExperience += selectable.CountSelected;
+
+        for (int i = 1; i <= selectable.CountSelected; i++)
+            _currentExperience += i * _spawner.CurrentSpawnedCubesCount;
 
         if (_countCubesDestroyed >= _targetCubesDestroyed && _spawner.CurrentSpawnedCubesCount < _spawner.MaxSpawnedCubesCount)
         {
             _countCubesDestroyed -= _targetCubesDestroyed;
-
             _spawner.IncreaseSpawnedCount();
-
             _spawnedCountUpSound.Play();
         }
 
@@ -187,7 +194,7 @@ public class Player : MonoBehaviour
         _currentMoney += Mathf.Round(selectable.GetScore() * _currentMultiplier);
         onComplite?.Invoke();
 
-        if(_bestCurrentCubesDestroyed < _currentCubesDestroyed)
+        if (_bestCurrentCubesDestroyed < _currentCubesDestroyed)
             _bestCurrentCubesDestroyed = _currentCubesDestroyed;
 
         if (_bestCurrentMoney < _currentMoney)
