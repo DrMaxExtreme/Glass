@@ -35,13 +35,12 @@ public class Player : MonoBehaviour
     [SerializeField] private TMP_Text _textBestCubesDestroyedGameOver;
     [SerializeField] private TMP_Text _textCurrentMoneyGameOver;
     [SerializeField] private TMP_Text _textBestCurrentMoneyGameOver;
-    [SerializeField] private TMP_Text _textExperienceGameOver;
-    [SerializeField] private TMP_Text _textLevelGameOver;
 
     private SelecterCubes _currentSecectable;
 
     private float _countCubesDestroyed = 0f;
-    private float _targetCubesDestroyed = 100f;
+    private float _startTargetCubesDestroyed = 50f;
+    private float _targetCubesDestroyed = 50f;
 
     private int _currentCubesDestroyed = 0;
     private float _bestCurrentCubesDestroyed = 0f;
@@ -98,6 +97,7 @@ public class Player : MonoBehaviour
         _countCubesDestroyed = 0f;
         _currentCubesDestroyed = 0;
         _currentMoney = 0f;
+        _targetCubesDestroyed = _startTargetCubesDestroyed;
         _spawner.Restart();
     }
 
@@ -107,7 +107,6 @@ public class Player : MonoBehaviour
         {
             _currentExperience -= _targetExperience;
             _targetExperience += _valueUpTargetExperience;
-            _targetCubesDestroyed++;
             _currentLevel++;
 
             _currentMultiplier += _valueUpMultiplier;
@@ -127,7 +126,7 @@ public class Player : MonoBehaviour
         if (_spawner.CurrentSpawnedCubesCount < _spawner.MaxSpawnedCubesCount)
             _textCubesDestroyed.text = countCubesDestroyed;
         else
-            _textCubesDestroyed.text  = Convert.ToString(_countCubesDestroyed);
+            _textCubesDestroyed.text  = Convert.ToString(_currentCubesDestroyed);
 
         if (_spawner.CurrentSpawnedCubesCount == _spawner.MaxSpawnedCubesCount)
             _spawnedUpFill.fillAmount = 1;
@@ -169,8 +168,6 @@ public class Player : MonoBehaviour
             _textBestCubesDestroyedGameOver.text = Convert.ToString(_bestCurrentCubesDestroyed);
             _textCurrentMoneyGameOver.text = Convert.ToString(_currentMoney);
             _textBestCurrentMoneyGameOver.text = Convert.ToString(_bestCurrentMoney);
-            _textExperienceGameOver.text = experienceText;
-            _textLevelGameOver.text = Convert.ToString(_currentLevel);
         }
     }
 
@@ -185,6 +182,7 @@ public class Player : MonoBehaviour
         if (_countCubesDestroyed >= _targetCubesDestroyed && _spawner.CurrentSpawnedCubesCount < _spawner.MaxSpawnedCubesCount)
         {
             _countCubesDestroyed -= _targetCubesDestroyed;
+            _targetCubesDestroyed += _targetCubesDestroyed;
             _spawner.IncreaseSpawnedCount();
             _spawnedCountUpSound.Play();
         }
