@@ -33,8 +33,10 @@ public class Player : MonoBehaviour
 
     [SerializeField] private TMP_Text _textCubesDestroyedGameOver;
     [SerializeField] private TMP_Text _textBestCubesDestroyedGameOver;
-    [SerializeField] private TMP_Text _textCurrentMoneyGameOver;
-    [SerializeField] private TMP_Text _textBestCurrentMoneyGameOver;
+    [SerializeField] private TMP_Text _textCountMoneyGameOver;
+    [SerializeField] private TMP_Text _textBestCountMoneyGameOver;
+    [SerializeField] private TMP_Text _textCountExperienceGameOver;
+    [SerializeField] private TMP_Text _textBestCounttExperienceGameOver;
 
     private SelecterCubes _currentSecectable;
 
@@ -50,10 +52,12 @@ public class Player : MonoBehaviour
     private float _currentMultiplier = 1f;
     private float _valueUpMultiplier = 0.1f;
 
-    private float _currentExperience = 0f;
+    private float _countExperience = 0f;
     private float _targetExperience = 1000f;
     private float _valueUpTargetExperience = 100f;
     private float _currentLevel = 0f;
+    private float _currentExperience = 0f;
+    private float _bestCurrentExperience = 0f;
 
     private void Start()
     {
@@ -97,15 +101,16 @@ public class Player : MonoBehaviour
         _countCubesDestroyed = 0f;
         _currentCubesDestroyed = 0;
         _currentMoney = 0f;
+        _currentExperience = 0f;
         _targetCubesDestroyed = _startTargetCubesDestroyed;
         _spawner.Restart();
     }
 
     private void TryUpLevel()
     {
-        if (_currentExperience >= _targetExperience)
+        if (_countExperience >= _targetExperience)
         {
-            _currentExperience -= _targetExperience;
+            _countExperience -= _targetExperience;
             _targetExperience += _valueUpTargetExperience;
             _currentLevel++;
 
@@ -120,7 +125,7 @@ public class Player : MonoBehaviour
         string countSpawnesText = "+" + _spawner.CurrentSpawnedCubesCount;
         string defaultCountSelectedText = "0";
         string currentLevelText = "x" + Math.Round(_currentMultiplier, 1);
-        string currentExperienceText = _currentExperience + "/" + _targetExperience;
+        string currentExperienceText = _countExperience + "/" + _targetExperience;
         string countCubesDestroyed = _countCubesDestroyed + "/" + _targetCubesDestroyed;
 
         if (_spawner.CurrentSpawnedCubesCount < _spawner.MaxSpawnedCubesCount)
@@ -139,7 +144,7 @@ public class Player : MonoBehaviour
         _textMoney.text = Convert.ToString(_currentMoney);
         _textCurrentMultiplier.text = currentLevelText;
 
-        _levelFill.fillAmount = _currentExperience / _targetExperience;
+        _levelFill.fillAmount = _countExperience / _targetExperience;
         _textCurrentLevel.text = Convert.ToString(_currentLevel);
         _textCurrentExperience.text = currentExperienceText;
     }
@@ -157,7 +162,6 @@ public class Player : MonoBehaviour
     private IEnumerator CheckOverflow()
     {
         float delaySeconds = 0.01f;
-        string experienceText = _currentExperience + "/" + _targetExperience;
 
         yield return new WaitForSeconds(delaySeconds);
 
@@ -166,18 +170,25 @@ public class Player : MonoBehaviour
             _canvas.GetComponent<GameOverPanel>().ActivateGameOverPanel();
             _textCubesDestroyedGameOver.text = Convert.ToString(_currentCubesDestroyed);
             _textBestCubesDestroyedGameOver.text = Convert.ToString(_bestCurrentCubesDestroyed);
-            _textCurrentMoneyGameOver.text = Convert.ToString(_currentMoney);
-            _textBestCurrentMoneyGameOver.text = Convert.ToString(_bestCurrentMoney);
+            _textCountMoneyGameOver.text = Convert.ToString(_currentMoney);
+            _textBestCountMoneyGameOver.text = Convert.ToString(_bestCurrentMoney);
+            _textCountExperienceGameOver.text = Convert.ToString(_currentExperience);
+            _textBestCounttExperienceGameOver.text = Convert.ToString(_bestCurrentExperience);
         }
     }
 
     private void GetReward(SelecterCubes selectable, Action onComplite)
     {
+        float myltiplayerExperience = _spawner.CurrentSpawnedCubesCount - 2;
+
         _countCubesDestroyed += selectable.CountSelected;
         _currentCubesDestroyed += selectable.CountSelected;
 
         for (int i = 1; i <= selectable.CountSelected; i++)
+        {
+            _countExperience += i * myltiplayerExperience * myltiplayerExperience;
             _currentExperience += i * _spawner.CurrentSpawnedCubesCount;
+        }
 
         if (_countCubesDestroyed >= _targetCubesDestroyed && _spawner.CurrentSpawnedCubesCount < _spawner.MaxSpawnedCubesCount)
         {
@@ -197,5 +208,8 @@ public class Player : MonoBehaviour
 
         if (_bestCurrentMoney < _currentMoney)
             _bestCurrentMoney = _currentMoney;
+
+        if(_bestCurrentExperience < _currentExperience)
+            _bestCurrentExperience = _currentExperience;
     }
 }
