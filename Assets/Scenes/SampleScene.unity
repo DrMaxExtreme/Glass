@@ -1786,7 +1786,7 @@ GameObject:
   - component: {fileID: 418939932}
   - component: {fileID: 418939931}
   m_Layer: 0
-  m_Name: Experience fill
+  m_Name: Level fill
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3863,6 +3863,35 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 764100531}
   m_CullTransparentMesh: 1
+--- !u!21 &782628375
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Hidden/OutlinePlus
+  m_Shader: {fileID: 4800000, guid: f0e778543e4d8a34295b7995426495da, type: 3}
+  m_ValidKeywords:
+  - OUTLINE_USE_DEPTH
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats: []
+    m_Colors: []
+  m_BuildTextureStacks: []
 --- !u!1 &846400443
 GameObject:
   m_ObjectHideFlags: 0
@@ -4261,15 +4290,15 @@ MonoBehaviour:
   _spawnedCountUpSound: {fileID: 963194232}
   _levelUpSound: {fileID: 963194231}
   _backgroundMusic: {fileID: 963194234}
-  _spawned4UpFill: {fileID: 0}
-  _spawned5UpFill: {fileID: 0}
-  _spawned6UpFill: {fileID: 0}
+  _spawned4UpFill: {fileID: 1391193302}
+  _spawned5UpFill: {fileID: 1783262568}
+  _spawned6UpFill: {fileID: 2045270454}
   _countCubesSpawned: {fileID: 1763708589}
   _textCountSelected: {fileID: 764100533}
   _textCubesDestroyed: {fileID: 1667899236}
   _textMoney: {fileID: 254194367}
   _textCurrentMultiplier: {fileID: 1006910290}
-  _levelFill: {fileID: 0}
+  _levelFill: {fileID: 418939931}
   _textCurrentLevel: {fileID: 107513576}
   _textCubesDestroyedGameOver: {fileID: 754240233}
   _textBestCubesDestroyedGameOver: {fileID: 1838997906}
@@ -4585,7 +4614,7 @@ MonoBehaviour:
   maxDepthThreshold: 10
   minNormalsThreshold: 0
   maxNormalsThreshold: 0
-  material: {fileID: 1170044072}
+  material: {fileID: 782628375}
 --- !u!82 &963194234
 AudioSource:
   m_ObjectHideFlags: 0
@@ -5576,35 +5605,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1097576758}
   m_CullTransparentMesh: 1
---- !u!21 &1170044072
-Material:
-  serializedVersion: 8
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: Hidden/OutlinePlus
-  m_Shader: {fileID: 4800000, guid: f0e778543e4d8a34295b7995426495da, type: 3}
-  m_ValidKeywords:
-  - OUTLINE_USE_DEPTH
-  m_InvalidKeywords: []
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs:
-    - _MainTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Ints: []
-    m_Floats: []
-    m_Colors: []
-  m_BuildTextureStacks: []
 --- !u!1 &1246517051
 GameObject:
   m_ObjectHideFlags: 0
@@ -7085,9 +7085,9 @@ RectTransform:
   m_Father: {fileID: 748136568}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 280, y: 896}
+  m_AnchorMin: {x: 0.5, y: 1}
+  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchoredPosition: {x: 280, y: -64}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1669033959

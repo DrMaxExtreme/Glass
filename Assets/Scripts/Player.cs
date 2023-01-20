@@ -176,8 +176,8 @@ public class Player : MonoBehaviour
     {
         float myltiplayerExperience = _spawner.CurrentSpawnedCubes - 2;
         int currentSpawnedcubes3 = 3;
-        int currentSpawnedcubes4 = 3;
-        int currentSpawnedcubes5 = 3;
+        int currentSpawnedcubes4 = 4;
+        int currentSpawnedcubes5 = 5;
 
         _currentCubesDestroyed += selectable.CountSelected;
 
