@@ -15,15 +15,15 @@ public class Spawner : MonoBehaviour
 
     private List<int> _pointsIndex = new List<int>();
 
-    private int _currentSpawnedCubesCount; 
+    private int _currentSpawnedCubes; 
 
-    public int CurrentSpawnedCubesCount => _currentSpawnedCubesCount;
+    public int CurrentSpawnedCubes => _currentSpawnedCubes;
     public int MaxSpawnedCubesCount => _maxSpawnedCubesCount;
 
     private void Start()
     {
         StartSpawnCubes();
-        _currentSpawnedCubesCount = _startSpawnedCubesCount;
+        _currentSpawnedCubes = _startSpawnedCubesCount;
     }
 
     public bool IsExceededLimitCubesInColumn()
@@ -56,7 +56,7 @@ public class Spawner : MonoBehaviour
     {
         int pointIndex;
 
-        while(_pointsIndex.Count < _currentSpawnedCubesCount)
+        while(_pointsIndex.Count < _currentSpawnedCubes)
         {
             pointIndex = Random.Range(0, _spawnPoints.Length);
 
@@ -76,7 +76,7 @@ public class Spawner : MonoBehaviour
 
     public void IncreaseSpawnedCount()
     {
-        _currentSpawnedCubesCount ++;
+        _currentSpawnedCubes ++;
     }
 
     public void Restart()
@@ -96,7 +96,7 @@ public class Spawner : MonoBehaviour
                 Destroy(hit.collider.gameObject);
         }
 
-        _currentSpawnedCubesCount = _startSpawnedCubesCount;
+        _currentSpawnedCubes = _startSpawnedCubesCount;
         StartSpawnCubes();
     }
 

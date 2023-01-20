@@ -124,7 +124,7 @@ public class Player : MonoBehaviour
 
     private void UpdateUI()
     {
-        string countSpawnesText = "+" + _spawner.CurrentSpawnedCubesCount;
+        string countSpawnesText = "+" + _spawner.CurrentSpawnedCubes;
         string defaultCountSelectedText = "0";
         string currentLevelText = "x" + Math.Round(_currentMultiplier, 1);
 
@@ -174,24 +174,27 @@ public class Player : MonoBehaviour
 
     private void GetReward(SelecterCubes selectable, Action onComplite)
     {
-        float myltiplayerExperience = _spawner.CurrentSpawnedCubesCount - 2;
+        float myltiplayerExperience = _spawner.CurrentSpawnedCubes - 2;
+        int currentSpawnedcubes3 = 3;
+        int currentSpawnedcubes4 = 3;
+        int currentSpawnedcubes5 = 3;
 
         _currentCubesDestroyed += selectable.CountSelected;
 
         for (int i = 1; i <= selectable.CountSelected; i++)
         {
             _countExperience += i * myltiplayerExperience * myltiplayerExperience;
-            _currentExperience += i * _spawner.CurrentSpawnedCubesCount;
+            _currentExperience += i * _spawner.CurrentSpawnedCubes;
         }
 
-        /*if (_currentCubesDestroyed >= _target4CubesDestroyed)
+        if (_currentCubesDestroyed >= _target4CubesDestroyed && _spawner.CurrentSpawnedCubes == currentSpawnedcubes3)
             IncreaseSpawnedCount();
 
-        if (_currentCubesDestroyed >= _target5CubesDestroyed)
+        if (_currentCubesDestroyed >= _target5CubesDestroyed && _spawner.CurrentSpawnedCubes == currentSpawnedcubes4)
             IncreaseSpawnedCount();
 
-        if (_currentCubesDestroyed >= _target6CubesDestroyed)
-            IncreaseSpawnedCount();*/
+        if (_currentCubesDestroyed >= _target6CubesDestroyed && _spawner.CurrentSpawnedCubes == currentSpawnedcubes5)
+            IncreaseSpawnedCount();
 
         Destroy(selectable.gameObject);
         _spawner.SpawnCubes();
