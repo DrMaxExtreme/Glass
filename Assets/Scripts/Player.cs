@@ -19,7 +19,9 @@ public class Player : MonoBehaviour
     [SerializeField] private AudioSource _levelUpSound;
     [SerializeField] private AudioSource _backgroundMusic;
 
-    [SerializeField] private MPImage _spawnedUpFill;
+    [SerializeField] private MPImage _spawned4UpFill;
+    [SerializeField] private MPImage _spawned5UpFill;
+    [SerializeField] private MPImage _spawned6UpFill;
     [SerializeField] private TMP_Text _countCubesSpawned;
     [SerializeField] private TMP_Text _textCountSelected;
     [SerializeField] private TMP_Text _textCubesDestroyed;
@@ -29,7 +31,6 @@ public class Player : MonoBehaviour
 
     [SerializeField] private MPImage _levelFill;
     [SerializeField] private TMP_Text _textCurrentLevel;
-    [SerializeField] private TMP_Text _textCurrentExperience;
 
     [SerializeField] private TMP_Text _textCubesDestroyedGameOver;
     [SerializeField] private TMP_Text _textBestCubesDestroyedGameOver;
@@ -40,9 +41,9 @@ public class Player : MonoBehaviour
 
     private SelecterCubes _currentSecectable;
 
-    private float _countCubesDestroyed = 0f;
-    private float _startTargetCubesDestroyed = 50f;
-    private float _targetCubesDestroyed = 50f;
+    private float _target4CubesDestroyed = 50f;
+    private float _target5CubesDestroyed = 150f;
+    private float _target6CubesDestroyed = 300f;
 
     private int _currentCubesDestroyed = 0;
     private float _bestCurrentCubesDestroyed = 0f;
@@ -61,12 +62,12 @@ public class Player : MonoBehaviour
 
     private void Start()
     {
-        UpdateTexts();
+        UpdateUI();
     }
 
     private void LateUpdate()
     {
-        UpdateTexts();
+        UpdateUI();
 
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
@@ -98,11 +99,12 @@ public class Player : MonoBehaviour
 
     public void Restart()
     {
-        _countCubesDestroyed = 0f;
         _currentCubesDestroyed = 0;
         _currentMoney = 0f;
         _currentExperience = 0f;
-        _targetCubesDestroyed = _startTargetCubesDestroyed;
+        _spawned4UpFill.fillAmount = 0;
+        _spawned5UpFill.fillAmount = 0;
+        _spawned6UpFill.fillAmount = 0;
         _spawner.Restart();
     }
 
@@ -120,23 +122,17 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void UpdateTexts()
+    private void UpdateUI()
     {
         string countSpawnesText = "+" + _spawner.CurrentSpawnedCubesCount;
         string defaultCountSelectedText = "0";
         string currentLevelText = "x" + Math.Round(_currentMultiplier, 1);
-        string currentExperienceText = _countExperience + "/" + _targetExperience;
-        string countCubesDestroyed = _countCubesDestroyed + "/" + _targetCubesDestroyed;
 
-        if (_spawner.CurrentSpawnedCubesCount < _spawner.MaxSpawnedCubesCount)
-            _textCubesDestroyed.text = countCubesDestroyed;
-        else
-            _textCubesDestroyed.text  = Convert.ToString(_currentCubesDestroyed);
+        _textCubesDestroyed.text = Convert.ToString(_currentCubesDestroyed);
 
-        if (_spawner.CurrentSpawnedCubesCount == _spawner.MaxSpawnedCubesCount)
-            _spawnedUpFill.fillAmount = 1;
-        else
-            _spawnedUpFill.fillAmount = _countCubesDestroyed / _targetCubesDestroyed;
+        _spawned4UpFill.fillAmount = _currentCubesDestroyed / _target4CubesDestroyed;
+        _spawned5UpFill.fillAmount = (_currentCubesDestroyed - _target4CubesDestroyed) / (_target5CubesDestroyed - _target4CubesDestroyed);
+        _spawned6UpFill.fillAmount = (_currentCubesDestroyed - _target5CubesDestroyed) / (_target6CubesDestroyed - _target5CubesDestroyed);
 
         _textCountSelected.text = defaultCountSelectedText;
         _countCubesSpawned.text = countSpawnesText;
@@ -146,7 +142,6 @@ public class Player : MonoBehaviour
 
         _levelFill.fillAmount = _countExperience / _targetExperience;
         _textCurrentLevel.text = Convert.ToString(_currentLevel);
-        _textCurrentExperience.text = currentExperienceText;
     }
 
     private void PlaySountClick()
@@ -181,7 +176,6 @@ public class Player : MonoBehaviour
     {
         float myltiplayerExperience = _spawner.CurrentSpawnedCubesCount - 2;
 
-        _countCubesDestroyed += selectable.CountSelected;
         _currentCubesDestroyed += selectable.CountSelected;
 
         for (int i = 1; i <= selectable.CountSelected; i++)
@@ -190,13 +184,14 @@ public class Player : MonoBehaviour
             _currentExperience += i * _spawner.CurrentSpawnedCubesCount;
         }
 
-        if (_countCubesDestroyed >= _targetCubesDestroyed && _spawner.CurrentSpawnedCubesCount < _spawner.MaxSpawnedCubesCount)
-        {
-            _countCubesDestroyed -= _targetCubesDestroyed;
-            _targetCubesDestroyed += _targetCubesDestroyed;
-            _spawner.IncreaseSpawnedCount();
-            _spawnedCountUpSound.Play();
-        }
+        /*if (_currentCubesDestroyed >= _target4CubesDestroyed)
+            IncreaseSpawnedCount();
+
+        if (_currentCubesDestroyed >= _target5CubesDestroyed)
+            IncreaseSpawnedCount();
+
+        if (_currentCubesDestroyed >= _target6CubesDestroyed)
+            IncreaseSpawnedCount();*/
 
         Destroy(selectable.gameObject);
         _spawner.SpawnCubes();
@@ -211,5 +206,11 @@ public class Player : MonoBehaviour
 
         if(_bestCurrentExperience < _currentExperience)
             _bestCurrentExperience = _currentExperience;
+    }
+
+    private void IncreaseSpawnedCount()
+    {
+        _spawner.IncreaseSpawnedCount();
+        _spawnedCountUpSound.Play();
     }
 }
