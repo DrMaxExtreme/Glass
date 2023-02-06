@@ -37,71 +37,80 @@ public class Player : MonoBehaviour
     [SerializeField] private TMP_Text _textCountMoneyGameOver;
     [SerializeField] private TMP_Text _textBestCountMoneyGameOver;
     [SerializeField] private TMP_Text _textCountExperienceGameOver;
-    [SerializeField] private TMP_Text _textBestCounttExperienceGameOver;
+    [SerializeField] private TMP_Text _textBestCountExperienceGameOver;
 
-    private SelecterCubes _currentSecectable;
+    private SelecterCubes _currentSelecter;
 
-    private float _target4CubesDestroyed = 50f;
-    private float _target5CubesDestroyed = 150f;
-    private float _target6CubesDestroyed = 300f;
+    private int _target4CubesDestroyed = 50;
+    private int _target5CubesDestroyed = 150;
+    private int _target6CubesDestroyed = 300;
 
     private int _currentCubesDestroyed = 0;
-    private float _bestCurrentCubesDestroyed = 0f;
+    private int _bestCurrentCubesDestroyed = 0;
 
-    private float _currentMoney = 0f;
-    private float _bestCurrentMoney = 0f;
+    private int _currentMoney = 0;
+    private int _bestCurrentMoney = 0;
     private float _currentMultiplier = 1f;
     private float _valueUpMultiplier = 0.1f;
 
-    private float _countExperience = 0f;
-    private float _targetExperience = 1000f;
-    private float _valueUpTargetExperience = 100f;
-    private float _currentLevel = 0f;
-    private float _currentExperience = 0f;
-    private float _bestCurrentExperience = 0f;
+    private int _countExperience = 0;
+    private int _targetExperience = 1000;
+    private int _valueUpTargetExperience = 100;
+    private int _currentLevel = 0;
+    private int _currentExperience = 0;
+    private int _bestCurrentExperience = 0;
+
+    private Ray _ray;
+    private RaycastHit _hit;
 
     private void Start()
     {
         UpdateUI();
+        _backgroundMusic.Play();
+        _bestCurrentCubesDestroyed = PlayerPrefs.GetInt("RecordCubesDestroyed", 0);
+        _bestCurrentMoney = PlayerPrefs.GetInt("RecordMoney", 0);
+        _bestCurrentExperience = PlayerPrefs.GetInt("RecordExperience", 0);
+        _currentLevel = PlayerPrefs.GetInt("CurrentLevel", 0);
+        _countExperience = PlayerPrefs.GetInt("CurrentExperience", 0);
     }
 
     private void LateUpdate()
     {
         UpdateUI();
 
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit;
+        _ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-        if (Physics.Raycast(ray, out hit, _layerMask))
+        if (Physics.Raycast(_ray, out _hit, _layerMask))
         {
-            SelecterCubes selectable = hit.collider.gameObject.GetComponent<SelecterCubes>();
+            SelecterCubes selectable = _hit.collider.gameObject.GetComponent<SelecterCubes>();
 
-            if (selectable)
+            if (selectable && Input.GetMouseButton(0))
             {
-                if (_currentSecectable && _currentSecectable != selectable)
-                    _currentSecectable.Deselect();
+                if (_currentSelecter && _currentSelecter != selectable)
+                    _currentSelecter.Deselect();
 
-                _currentSecectable = selectable;
+                _currentSelecter = selectable;
                 selectable.Select(true);
                 selectable.SelectIdentityColorCubes(false);
                 _textCountSelected.text = Convert.ToString(selectable.CountSelected);
             }
 
-            if (selectable && Input.GetMouseButtonDown(0))
+            if (selectable && Input.GetMouseButtonUp(0))
             {
-                PlaySountClick();
+                PlaySoundClick();
                 selectable.SelectIdentityColorCubes(true);
-                GetReward(selectable, StartDeley);
+                GetReward(selectable, StartDelay);
                 TryUpLevel();
             }
         }
+
     }
 
     public void Restart()
     {
         _currentCubesDestroyed = 0;
-        _currentMoney = 0f;
-        _currentExperience = 0f;
+        _currentMoney = 0;
+        _currentExperience = 0;
         _spawned4UpFill.fillAmount = 0;
         _spawned5UpFill.fillAmount = 0;
         _spawned6UpFill.fillAmount = 0;
@@ -115,41 +124,40 @@ public class Player : MonoBehaviour
             _countExperience -= _targetExperience;
             _targetExperience += _valueUpTargetExperience;
             _currentLevel++;
-
+            PlayerPrefs.SetInt("CurrentLevel", _currentLevel);
             _currentMultiplier += _valueUpMultiplier;
-
             _levelUpSound.Play();
         }
     }
 
     private void UpdateUI()
     {
-        string countSpawnesText = "+" + _spawner.CurrentSpawnedCubes;
+        string countSpawnedText = "+" + _spawner.CurrentSpawnedCubes;
         string defaultCountSelectedText = "0";
         string currentLevelText = "x" + Math.Round(_currentMultiplier, 1);
 
         _textCubesDestroyed.text = Convert.ToString(_currentCubesDestroyed);
 
-        _spawned4UpFill.fillAmount = _currentCubesDestroyed / _target4CubesDestroyed;
-        _spawned5UpFill.fillAmount = (_currentCubesDestroyed - _target4CubesDestroyed) / (_target5CubesDestroyed - _target4CubesDestroyed);
-        _spawned6UpFill.fillAmount = (_currentCubesDestroyed - _target5CubesDestroyed) / (_target6CubesDestroyed - _target5CubesDestroyed);
+        _spawned4UpFill.fillAmount = Convert.ToSingle(_currentCubesDestroyed) / Convert.ToSingle(_target4CubesDestroyed);
+        _spawned5UpFill.fillAmount = (Convert.ToSingle(_currentCubesDestroyed) - Convert.ToSingle(_target4CubesDestroyed)) / (Convert.ToSingle(_target5CubesDestroyed) - Convert.ToSingle(_target4CubesDestroyed));
+        _spawned6UpFill.fillAmount = (Convert.ToSingle(_currentCubesDestroyed) - Convert.ToSingle(_target5CubesDestroyed)) / (Convert.ToSingle(_target6CubesDestroyed) - Convert.ToSingle(_target5CubesDestroyed));
 
         _textCountSelected.text = defaultCountSelectedText;
-        _countCubesSpawned.text = countSpawnesText;
+        _countCubesSpawned.text = countSpawnedText;
 
         _textMoney.text = Convert.ToString(_currentMoney);
         _textCurrentMultiplier.text = currentLevelText;
 
-        _levelFill.fillAmount = _countExperience / _targetExperience;
+        _levelFill.fillAmount = Convert.ToSingle(_countExperience) / Convert.ToSingle(_targetExperience);
         _textCurrentLevel.text = Convert.ToString(_currentLevel);
     }
 
-    private void PlaySountClick()
+    private void PlaySoundClick()
     {
         _clickSound.Play();
     }
 
-    private void StartDeley()
+    private void StartDelay()
     {
         StartCoroutine(CheckOverflow());
     }
@@ -168,7 +176,7 @@ public class Player : MonoBehaviour
             _textCountMoneyGameOver.text = Convert.ToString(_currentMoney);
             _textBestCountMoneyGameOver.text = Convert.ToString(_bestCurrentMoney);
             _textCountExperienceGameOver.text = Convert.ToString(_currentExperience);
-            _textBestCounttExperienceGameOver.text = Convert.ToString(_bestCurrentExperience);
+            _textBestCountExperienceGameOver.text = Convert.ToString(_bestCurrentExperience);
         }
     }
 
@@ -183,8 +191,9 @@ public class Player : MonoBehaviour
 
         for (int i = 1; i <= selectable.CountSelected; i++)
         {
-            _countExperience += i * myltiplayerExperience * myltiplayerExperience;
+            _countExperience += Convert.ToInt32(Mathf.Round(i * myltiplayerExperience * myltiplayerExperience));
             _currentExperience += i * _spawner.CurrentSpawnedCubes;
+            PlayerPrefs.SetInt("CurrentExperience", _countExperience);
         }
 
         if (_currentCubesDestroyed >= _target4CubesDestroyed && _spawner.CurrentSpawnedCubes == currentSpawnedcubes3)
@@ -198,17 +207,26 @@ public class Player : MonoBehaviour
 
         Destroy(selectable.gameObject);
         _spawner.SpawnCubes();
-        _currentMoney += Mathf.Round(selectable.GetScore() * _currentMultiplier);
+        _currentMoney += Convert.ToInt32(Mathf.Round(selectable.GetScore() * _currentMultiplier));
         onComplite?.Invoke();
 
         if (_bestCurrentCubesDestroyed < _currentCubesDestroyed)
+        {
             _bestCurrentCubesDestroyed = _currentCubesDestroyed;
+            PlayerPrefs.SetInt("RecordCubesDestroyed", _currentCubesDestroyed);
+        }
 
         if (_bestCurrentMoney < _currentMoney)
+        {
             _bestCurrentMoney = _currentMoney;
+            PlayerPrefs.SetInt("RecordMoney", _currentMoney);
+        }
 
-        if(_bestCurrentExperience < _currentExperience)
+        if (_bestCurrentExperience < _currentExperience)
+        {
             _bestCurrentExperience = _currentExperience;
+            PlayerPrefs.SetInt("RecordExperience", _currentExperience);
+        }
     }
 
     private void IncreaseSpawnedCount()
