@@ -72,6 +72,7 @@ public class Player : MonoBehaviour
         _bestCurrentExperience = PlayerPrefs.GetInt("RecordExperience", 0);
         _currentLevel = PlayerPrefs.GetInt("CurrentLevel", 0);
         _countExperience = PlayerPrefs.GetInt("CurrentExperience", 0);
+        _currentMultiplier = PlayerPrefs.GetFloat("CurrentMultiplier", _currentMultiplier);
     }
 
     private void LateUpdate()
@@ -126,6 +127,7 @@ public class Player : MonoBehaviour
             _currentLevel++;
             PlayerPrefs.SetInt("CurrentLevel", _currentLevel);
             _currentMultiplier += _valueUpMultiplier;
+            PlayerPrefs.SetFloat("CurrentMultiplier", _currentMultiplier);
             _levelUpSound.Play();
         }
     }
