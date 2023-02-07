@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UIElements;
 
-public class SelecterCubes : MonoBehaviour
+public class SelectorCubes : MonoBehaviour
 {
     [SerializeField] private GameObject _cube;
     [SerializeField] private Color[] _colors;
@@ -107,7 +107,7 @@ public class SelecterCubes : MonoBehaviour
     {
         foreach (var collision in collisions)
         {
-            int collisionColorIndex = collision.collider.gameObject.GetComponent<SelecterCubes>().ColorIndex;
+            int collisionColorIndex = collision.collider.gameObject.GetComponent<SelectorCubes>().ColorIndex;
 
             if (collisionColorIndex == _colorIndex)
             {
@@ -123,7 +123,7 @@ public class SelecterCubes : MonoBehaviour
 
     private void SelectColorInRay(RaycastHit collision)
     {
-        collision.collider.gameObject.GetComponent<SelecterCubes>().Select(true);
+        collision.collider.gameObject.GetComponent<SelectorCubes>().Select(true);
     }
 
     private void DectroyColorInRay(RaycastHit collision)

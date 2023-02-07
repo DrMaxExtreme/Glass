@@ -21,10 +21,10 @@ public class SoundSwitcher : MonoBehaviour
         Switch(0, true, false);
     }
 
-    private void Switch(float soundOffValue, bool offButton, bool onButton)
+    private void Switch(float soundOffValue, bool isActiveOffButton, bool IsActiveOnButton)
     {
         _mixer.audioMixer.SetFloat(_masterMixerName, soundOffValue);
-        _soundOff.gameObject.SetActive(offButton);
-        _soundOn.gameObject.SetActive(onButton);
+        _soundOff.gameObject.SetActive(isActiveOffButton);
+        _soundOn.gameObject.SetActive(IsActiveOnButton);
     }
 }
