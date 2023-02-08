@@ -3449,6 +3449,7 @@ GameObject:
   - component: {fileID: 748136566}
   - component: {fileID: 748136565}
   - component: {fileID: 748136569}
+  - component: {fileID: 748136573}
   - component: {fileID: 748136570}
   - component: {fileID: 748136572}
   - component: {fileID: 748136571}
@@ -3767,6 +3768,36 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &748136573
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 748136564}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c71f43e33e6b78944af34d9af118940a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _spawner: {fileID: 0}
+  _canvas: {fileID: 0}
+  _spawned4UpFill: {fileID: 0}
+  _spawned5UpFill: {fileID: 0}
+  _spawned6UpFill: {fileID: 0}
+  _countCubesSpawned: {fileID: 0}
+  _textCountSelected: {fileID: 0}
+  _textCubesDestroyed: {fileID: 0}
+  _textMoney: {fileID: 0}
+  _textCurrentMultiplier: {fileID: 0}
+  _levelFill: {fileID: 0}
+  _textCurrentLevel: {fileID: 0}
+  _textCubesDestroyedGameOver: {fileID: 0}
+  _textBestCubesDestroyedGameOver: {fileID: 0}
+  _textCountMoneyGameOver: {fileID: 0}
+  _textBestCountMoneyGameOver: {fileID: 0}
+  _textCountExperienceGameOver: {fileID: 0}
+  _textBestCountExperienceGameOver: {fileID: 0}
 --- !u!1 &754240231
 GameObject:
   m_ObjectHideFlags: 0
@@ -4039,35 +4070,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 764100531}
   m_CullTransparentMesh: 1
---- !u!21 &782628375
-Material:
-  serializedVersion: 8
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: Hidden/OutlinePlus
-  m_Shader: {fileID: 4800000, guid: f0e778543e4d8a34295b7995426495da, type: 3}
-  m_ValidKeywords:
-  - OUTLINE_USE_DEPTH
-  m_InvalidKeywords: []
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs:
-    - _MainTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Ints: []
-    m_Floats: []
-    m_Colors: []
-  m_BuildTextureStacks: []
 --- !u!1 &846400443
 GameObject:
   m_ObjectHideFlags: 0
@@ -4462,27 +4464,11 @@ MonoBehaviour:
   _layerMask:
     serializedVersion: 2
     m_Bits: 64
-  _canvas: {fileID: 748136567}
+  _UIUpdater: {fileID: 0}
   _clickSound: {fileID: 963194230}
   _spawnedCountUpSound: {fileID: 963194232}
   _levelUpSound: {fileID: 963194231}
   _backgroundMusic: {fileID: 963194234}
-  _spawned4UpFill: {fileID: 1391193302}
-  _spawned5UpFill: {fileID: 1783262568}
-  _spawned6UpFill: {fileID: 2045270454}
-  _countCubesSpawned: {fileID: 1763708589}
-  _textCountSelected: {fileID: 764100533}
-  _textCubesDestroyed: {fileID: 1667899236}
-  _textMoney: {fileID: 254194367}
-  _textCurrentMultiplier: {fileID: 1006910290}
-  _levelFill: {fileID: 418939931}
-  _textCurrentLevel: {fileID: 107513576}
-  _textCubesDestroyedGameOver: {fileID: 754240233}
-  _textBestCubesDestroyedGameOver: {fileID: 1838997906}
-  _textCountMoneyGameOver: {fileID: 1544290745}
-  _textBestCountMoneyGameOver: {fileID: 221534611}
-  _textCountExperienceGameOver: {fileID: 603976886}
-  _textBestCountExperienceGameOver: {fileID: 910381850}
 --- !u!82 &963194230
 AudioSource:
   m_ObjectHideFlags: 0
@@ -4791,7 +4777,7 @@ MonoBehaviour:
   maxDepthThreshold: 10
   minNormalsThreshold: 0
   maxNormalsThreshold: 0
-  material: {fileID: 782628375}
+  material: {fileID: 1835558507}
 --- !u!82 &963194234
 AudioSource:
   m_ObjectHideFlags: 0
@@ -8155,6 +8141,35 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1811126962}
   m_CullTransparentMesh: 1
+--- !u!21 &1835558507
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Hidden/OutlinePlus
+  m_Shader: {fileID: 4800000, guid: f0e778543e4d8a34295b7995426495da, type: 3}
+  m_ValidKeywords:
+  - OUTLINE_USE_DEPTH
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats: []
+    m_Colors: []
+  m_BuildTextureStacks: []
 --- !u!1 &1838997904
 GameObject:
   m_ObjectHideFlags: 0
