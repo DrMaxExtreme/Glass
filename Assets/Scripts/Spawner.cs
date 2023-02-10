@@ -31,7 +31,6 @@ public class Spawner : MonoBehaviour
         float rayDisnatce = 20f;
         float startRayYPosition = 1f;
         int maxCubesCount = 10;
-        int countEmptyColumn = 0;
 
         foreach (var spawnPoint in _spawnPoints)
         {
@@ -41,13 +40,7 @@ public class Spawner : MonoBehaviour
 
             if (Physics.RaycastAll(ray, rayDisnatce, _layerMask).Count() > maxCubesCount)
                 return true;
-
-            if (Physics.RaycastAll(ray, rayDisnatce, _layerMask).Count() == 0)
-                countEmptyColumn++;
         }
-
-        if (countEmptyColumn == _spawnPoints.Count())
-            SpawnCubes();
 
         return false;
     }

@@ -27,13 +27,13 @@ public class GameOverPanel : MonoBehaviour
 
     public void Activate()
     {
-        SwichGameOver(true, false);
+        Show(true, false);
         _gameOverSound.Play();
     }
 
     private void Reward()
     {
-        SwichGameOver(false, true);
+        Show(false, true);
         _continueSound.Play();
         _continueButton.gameObject.SetActive(false);
 
@@ -45,7 +45,7 @@ public class GameOverPanel : MonoBehaviour
 
     public void RestartScene()
     {
-        SwichGameOver(false, true);
+        Show(false, true);
         _continueButton.gameObject.SetActive(true);
         _player.Restart();
         InterstitialAd.Show();
@@ -57,7 +57,7 @@ public class GameOverPanel : MonoBehaviour
         VideoAd.Show(onOpenCallback:Pause, onRewardedCallback:Reward, onCloseCallback:Continue);
     }
     
-    private void SwichGameOver(bool isActiveGameOverPanel, bool isActiveGlass)
+    private void Show(bool isActiveGameOverPanel, bool isActiveGlass)
     {
         _gameOverPanel.SetActive(isActiveGameOverPanel);
         _glass.SetActive(isActiveGlass);
