@@ -43,11 +43,18 @@ public class Player : MonoBehaviour
     private Ray _ray;
     private RaycastHit _hit;
 
+    private const string _recordCubesDestroyedPrefs = "RecordCubesDestroyed";
+    private const string _recordMoneyPrefs = "RecordMoney";
+    private const string _recordExperiencePrefs = "RecordExperience";
+    private const string _currentLevelPrefs = "CurrentLevel";
+    private const string _currentExperiencePrefs = "CurrentExperience";
+    private const string _currentMultiplierPrefs = "CurrentMultiplier";
+
     private void Start()
     {
         _UIUpdater.Invoke(_currentMultiplier, _currentCubesDestroyed, _target4CubesDestroyed, _target5CubesDestroyed, _target6CubesDestroyed, _currentMoney, _countExperience, _targetExperience, _currentLevel);
         _backgroundMusic.Play();
-        GetPrefs();
+        InitPrefs();
     }
 
     private void LateUpdate()
@@ -101,9 +108,9 @@ public class Player : MonoBehaviour
             _countExperience -= _targetExperience;
             _targetExperience += _valueUpTargetExperience;
             _currentLevel++;
-            PlayerPrefs.SetInt("CurrentLevel", _currentLevel);
+            PlayerPrefs.SetInt(_currentLevelPrefs, _currentLevel);
             _currentMultiplier += _valueUpMultiplier;
-            PlayerPrefs.SetFloat("CurrentMultiplier", _currentMultiplier);
+            PlayerPrefs.SetFloat(_currentMultiplierPrefs, _currentMultiplier);
             _levelUpSound.Play();
         }
     }
@@ -143,7 +150,7 @@ public class Player : MonoBehaviour
         {
             _countExperience += Convert.ToInt32(Mathf.Round(i * myltiplayerExperience * myltiplayerExperience));
             _currentExperience += i * _spawner.CurrentSpawnedCubes;
-            PlayerPrefs.SetInt("CurrentExperience", _countExperience);
+            PlayerPrefs.SetInt(_currentExperiencePrefs, _countExperience);
         }
 
         if (_currentCubesDestroyed >= _target4CubesDestroyed && _spawner.CurrentSpawnedCubes == currentSpawnedcubes3)
@@ -163,19 +170,19 @@ public class Player : MonoBehaviour
         if (_bestCurrentCubesDestroyed < _currentCubesDestroyed)
         {
             _bestCurrentCubesDestroyed = _currentCubesDestroyed;
-            PlayerPrefs.SetInt("RecordCubesDestroyed", _currentCubesDestroyed);
+            PlayerPrefs.SetInt(_recordCubesDestroyedPrefs, _currentCubesDestroyed);
         }
 
         if (_bestCurrentMoney < _currentMoney)
         {
             _bestCurrentMoney = _currentMoney;
-            PlayerPrefs.SetInt("RecordMoney", _currentMoney);
+            PlayerPrefs.SetInt(_recordMoneyPrefs, _currentMoney);
         }
 
         if (_bestCurrentExperience < _currentExperience)
         {
             _bestCurrentExperience = _currentExperience;
-            PlayerPrefs.SetInt("RecordExperience", _currentExperience);
+            PlayerPrefs.SetInt(_recordExperiencePrefs, _currentExperience);
         }
     }
 
@@ -185,13 +192,13 @@ public class Player : MonoBehaviour
         _spawnedCountUpSound.Play();
     }
 
-    private void GetPrefs()
+    private void InitPrefs()
     {
-        _bestCurrentCubesDestroyed = PlayerPrefs.GetInt("RecordCubesDestroyed", 0);
-        _bestCurrentMoney = PlayerPrefs.GetInt("RecordMoney", 0);
-        _bestCurrentExperience = PlayerPrefs.GetInt("RecordExperience", 0);
-        _currentLevel = PlayerPrefs.GetInt("CurrentLevel", 0);
-        _countExperience = PlayerPrefs.GetInt("CurrentExperience", 0);
-        _currentMultiplier = PlayerPrefs.GetFloat("CurrentMultiplier", _currentMultiplier);
+        _bestCurrentCubesDestroyed = PlayerPrefs.GetInt(_recordCubesDestroyedPrefs, 0);
+        _bestCurrentMoney = PlayerPrefs.GetInt(_recordMoneyPrefs, 0);
+        _bestCurrentExperience = PlayerPrefs.GetInt(_recordExperiencePrefs, 0);
+        _currentLevel = PlayerPrefs.GetInt(_currentLevelPrefs, 0);
+        _countExperience = PlayerPrefs.GetInt(_currentExperiencePrefs, 0);
+        _currentMultiplier = PlayerPrefs.GetFloat(_currentMultiplierPrefs, _currentMultiplier);
     }
 }

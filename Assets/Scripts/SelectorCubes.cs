@@ -7,7 +7,7 @@ using UnityEngine.UIElements;
 
 public class SelectorCubes : MonoBehaviour
 {
-    [SerializeField] private GameObject _cube;
+    [SerializeField] private Cube _cube;
     [SerializeField] private Color[] _colors;
     [SerializeField] private float _differenceIntensityColor;
     [SerializeField] private float _differenceIntensityScale;

@@ -72,7 +72,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 825db21e58da74a4faa210be1aa968f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _cube: {fileID: 5923426532728636089}
+  _cube: {fileID: 1704546217693745932}
   _colors:
   - {r: 0.38431373, g: 1, b: 1, a: 1}
   - {r: 0.38431373, g: 0.38431373, b: 1, a: 1}
@@ -152,3 +152,15 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 728358866666282807, guid: bc8eca51a137e7347b02181bcbb7edc6, type: 3}
   m_PrefabInstance: {fileID: 6354468624787070350}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1704546217693745932
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5923426532728636089}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44b916364237e4a4c9f315f7b6057106, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
